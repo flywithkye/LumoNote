@@ -34,11 +34,11 @@ class MainActivity : AppCompatActivity() {
 
 
         //dbConnection.insertTag(TagItem(0, "All Notes"))
-        dbConnection.insertTag(TagItem(0, "School"))
-        dbConnection.insertTag(TagItem(0, "Work"))
-        dbConnection.insertTag(TagItem(0, "Korean"))
-        dbConnection.insertTag(TagItem(0, "Japanese"))
-        dbConnection.insertTag(TagItem(0, "Italian"))
+        dbConnection.insertTag(TagItem(1, "School"))
+        dbConnection.insertTag(TagItem(2, "Work"))
+        dbConnection.insertTag(TagItem(3, "Korean"))
+        dbConnection.insertTag(TagItem(4, "Japanese"))
+        dbConnection.insertTag(TagItem(5, "Italian"))
         tagsDisplayAdapter = TagsDisplayAdapter(dbConnection.getAllTags(), this)
 
         // Define layout and adapter to use for tag display
