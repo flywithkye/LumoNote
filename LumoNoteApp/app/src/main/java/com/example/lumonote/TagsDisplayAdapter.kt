@@ -1,21 +1,25 @@
 package com.example.lumonote
 
 import android.content.Context
+import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 
 // Inherits from RecyclerView.Adapter to allow definition of recycler view behaviour
-class TagsDisplayAdapter(private var tagsList: List<TagItem>, context: Context)
+class TagsDisplayAdapter(private var tagsList: List<TagItem>, val context: Context)
     : RecyclerView.Adapter<TagsDisplayAdapter.TagDisplayViewHolder>()
 {
     // The layout from which this view data is accessed is passed into this later
     class TagDisplayViewHolder (tagDisplayView: View) : RecyclerView.ViewHolder(tagDisplayView) {
         val tagCardView: CardView = tagDisplayView.findViewById(R.id.tagItemCV)
+        val tagLayoutView: LinearLayout = tagDisplayView.findViewById(R.id.tagItemLayoutLL)
         val tagName: TextView = tagDisplayView.findViewById(R.id.tagNameTV)
     }
 
@@ -35,6 +39,12 @@ class TagsDisplayAdapter(private var tagsList: List<TagItem>, context: Context)
         // Find and store the equivalent tag object in the list meant to be same as in UI
         val tag = tagsList[position]
 
+        if (position == 0) {
+            holder.tagLayoutView.setBackgroundColor(getColor(context, R.color.gold))
+            holder.tagName.setTextColor(getColor(context, R.color.dark_grey))
+            holder.tagName.setTypeface(null, Typeface.BOLD);
+        }
+
         // Populate the UI tag at that position with the data from the tag obj at same
         // index in the list
         holder.tagName.text = tag.tagName
@@ -44,6 +54,8 @@ class TagsDisplayAdapter(private var tagsList: List<TagItem>, context: Context)
             // Logic here to change notes
             Log.d("TagsDisplayAdapter", "Clicked!")
         }
+
+
     }
 
     // Ensure UI stays up-to-date with tagss list
@@ -51,5 +63,9 @@ class TagsDisplayAdapter(private var tagsList: List<TagItem>, context: Context)
         tagsList = newTags
 
         notifyDataSetChanged()
+    }
+
+    fun toggleTagColor() {
+
     }
 }

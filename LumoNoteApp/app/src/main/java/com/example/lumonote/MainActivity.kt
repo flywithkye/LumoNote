@@ -33,12 +33,12 @@ class MainActivity : AppCompatActivity() {
         mainViewBinding.notesPreviewRV.adapter = notesPreviewAdapter
 
 
-        //dbConnection.insertTag(TagItem(0, "All Notes"))
-        dbConnection.insertTag(TagItem(1, "School"))
-        dbConnection.insertTag(TagItem(2, "Work"))
-        dbConnection.insertTag(TagItem(3, "Korean"))
-        dbConnection.insertTag(TagItem(4, "Japanese"))
-        dbConnection.insertTag(TagItem(5, "Italian"))
+        dbConnection.insertTag(TagItem(1, "All Notes"))
+        dbConnection.insertTag(TagItem(2, "School"))
+        dbConnection.insertTag(TagItem(3, "Work"))
+        dbConnection.insertTag(TagItem(4, "Korean"))
+        dbConnection.insertTag(TagItem(5, "Japanese"))
+        dbConnection.insertTag(TagItem(6, "Italian"))
         tagsDisplayAdapter = TagsDisplayAdapter(dbConnection.getAllTags(), this)
 
         // Define layout and adapter to use for tag display

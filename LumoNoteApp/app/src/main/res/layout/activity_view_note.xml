@@ -37,8 +37,8 @@
 
         <ImageView
             android:id="@+id/deleteButtonIV"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="32dp"
 
@@ -47,12 +47,12 @@
             app:layout_constraintEnd_toStartOf="@+id/replaceButtonIV"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/light_grey_2" />
+            app:tint="@color/light_grey_1" />
 
         <ImageView
             android:id="@+id/replaceButtonIV"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="32dp"
 
@@ -61,7 +61,7 @@
             app:layout_constraintEnd_toStartOf="@+id/saveButtonIV"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/light_grey_2" />
+            app:tint="@color/light_grey_1" />
 
         <ImageView
             android:id="@+id/saveButtonIV"
@@ -158,6 +158,9 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/formatTextSectionCL"
+        android:visibility="gone"
+
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginStart="48dp"
@@ -255,6 +258,7 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/editNoteSectionCL"

@@ -1,7 +1,13 @@
 package com.example.lumonote
 
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Spanned
+import android.text.style.StyleSpan
+import android.text.style.UnderlineSpan
 import android.util.Log
+import android.view.KeyEvent
+import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -88,6 +94,26 @@ class ViewNoteActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, callback)
 
 
+        // Logic to display text edit element upon clicking text icon
+        viewNoteViewBinding.textFormatButtonIV.setOnClickListener {
+            if (viewNoteViewBinding.formatTextSectionCL.visibility == View.VISIBLE) {
+                viewNoteViewBinding.formatTextSectionCL.visibility = View.GONE // Hide the view
+            } else {
+                viewNoteViewBinding.formatTextSectionCL.visibility = View.VISIBLE // Show the view
+            }
+        }
+
+
+        viewNoteViewBinding.boldButtonIV.setOnClickListener {
+            formatText("bold")
+        }
+        viewNoteViewBinding.italicsButtonIV.setOnClickListener {
+            formatText("italics")
+        }
+        viewNoteViewBinding.underlineButtonIV.setOnClickListener {
+            formatText("underline")
+        }
+
     }
 
     // Submits note to database upon clicking save button
@@ -172,5 +198,48 @@ class ViewNoteActivity : AppCompatActivity() {
 
         return "$weekDayString, $fixedCurrentDate"
 
+    }
+
+    fun formatText(type: String) {
+        val selectionStart: Int = viewNoteViewBinding.noteContentET.selectionStart
+        val selectionEnd: Int = viewNoteViewBinding.noteContentET.selectionEnd
+
+        if (selectionStart != selectionEnd) { // Only if text is actually selected
+            val stringBuilder = viewNoteViewBinding.noteContentET.text
+
+            when (type) {
+                "bold" -> {
+                    stringBuilder.setSpan(
+                        StyleSpan(Typeface.BOLD),
+                        selectionStart,
+                        selectionEnd,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+                "italics" -> {
+                    stringBuilder.setSpan(
+                        StyleSpan(Typeface.ITALIC),
+                        selectionStart,
+                        selectionEnd,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+                "underline" -> {
+                    stringBuilder.setSpan(
+                        UnderlineSpan(),
+                        selectionStart,
+                        selectionEnd,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+                else -> {
+                    Log.e("ViewNoteActivity", "Type: $type does not exist.")
+                }
+            }
+
+            viewNoteViewBinding.noteContentET.text = stringBuilder
+            viewNoteViewBinding.noteContentET.setSelection(selectionStart, selectionEnd)
+
+        }
     }
 }
