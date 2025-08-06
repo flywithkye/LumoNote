@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
 
-    tools:context=".MainActivity"
     android:background="@color/dark_grey"
-    >
+    tools:context=".MainActivity">
 
 
     <RelativeLayout
         android:id="@+id/topMainLayoutLL"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+
 
         android:background="@color/black"
 
@@ -40,9 +39,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
 
+                android:fontFamily="@font/inter"
                 android:text="LumoNote."
                 android:textColor="@color/light_grey_1"
-                android:textSize="23sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -70,22 +70,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
-            android:layout_below="@+id/appTopBarCL"
-            >
+            android:layout_below="@+id/appTopBarCL">
 
             <RelativeLayout
                 android:id="@+id/tagSectionLayoutLL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="12dp"
                 android:layout_marginTop="8dp"
-                >
+                android:layout_marginBottom="12dp">
 
                 <HorizontalScrollView
                     android:id="@+id/tagScrollViewHSV"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    >
+                    android:layout_height="50dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -132,8 +129,7 @@
 
                     android:layout_marginTop="64dp"
                     android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                />
+                    android:paddingRight="8dp" />
 
 
             </RelativeLayout>
@@ -142,7 +138,6 @@
 
 
     </RelativeLayout>
-
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -186,10 +181,9 @@
         android:id="@+id/navigationSectionCL"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:background="@color/black"
-        >
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/homeViewIV"

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
+import com.example.lumonote.data.DatabaseHelper
 import com.example.lumonote.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -33,12 +34,12 @@ class MainActivity : AppCompatActivity() {
         mainViewBinding.notesPreviewRV.adapter = notesPreviewAdapter
 
 
-        dbConnection.insertTag(TagItem(1, "All Notes"))
-        dbConnection.insertTag(TagItem(2, "School"))
-        dbConnection.insertTag(TagItem(3, "Work"))
-        dbConnection.insertTag(TagItem(4, "Korean"))
-        dbConnection.insertTag(TagItem(5, "Japanese"))
-        dbConnection.insertTag(TagItem(6, "Italian"))
+        dbConnection.insertTag(Tag(1, "All Notes"))
+        dbConnection.insertTag(Tag(2, "School"))
+        dbConnection.insertTag(Tag(3, "Work"))
+        dbConnection.insertTag(Tag(4, "Korean"))
+        dbConnection.insertTag(Tag(5, "Japanese"))
+        dbConnection.insertTag(Tag(6, "Italian"))
         tagsDisplayAdapter = TagsDisplayAdapter(dbConnection.getAllTags(), this)
 
         // Define layout and adapter to use for tag display
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         // Calls reference to the create note floating button in activity_main.xml
         mainViewBinding.createButtonIV.setOnClickListener {
-            var intent = Intent(this, ViewNoteActivity::class.java)
+            var intent = Intent(this, NoteViewActivity::class.java)
             startActivity(intent)
         }
     }
