@@ -7,8 +7,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
-import com.example.lumonote.data.DatabaseHelper
+import com.example.lumonote.data.database.DatabaseHelper
+import com.example.lumonote.data.models.Tag
 import com.example.lumonote.databinding.ActivityMainBinding
+import com.example.lumonote.ui.noteview.NoteViewActivity
+import com.example.lumonote.utils.NotesPreviewAdapter
+import com.example.lumonote.utils.TagsDisplayAdapter
 
 class MainActivity : AppCompatActivity() {
 
