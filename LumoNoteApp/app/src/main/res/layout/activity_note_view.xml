@@ -9,7 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.noteview.NoteViewActivity">
+    tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -34,6 +34,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
             app:tint="@color/gold" />
+
 
         <ImageView
             android:id="@+id/deleteButtonIV"
@@ -77,13 +78,10 @@
             app:tint="@color/gold" />
 
 
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-
-
-    />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -132,24 +130,25 @@
                 android:hint="Title"
                 android:fontFamily="@font/inter"
                 android:textColor="@color/light_grey_1"
-                android:textColorHint="@color/light_grey_2"
+                android:textColorHint="@color/light_grey_3"
                 android:textSize="24sp"
                 android:textStyle="bold"
 
                 app:layout_constraintTop_toBottomOf="@+id/modifiedDateTV" />
 
-            <EditText
+            <com.example.lumonote.ui.noteview.SelectableEditText
                 android:id="@+id/noteContentET"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingRight="10dp"
                 android:background="@android:color/transparent"
-                android:gravity="top"
+                android:gravity="start|top"
                 android:hint="Make a note..."
 
+                android:inputType="textMultiLine"
                 android:fontFamily="@font/inter"
                 android:textColor="@color/light_grey_1"
-                android:textColorHint="@color/light_grey_2"
+                android:textColorHint="@color/light_grey_3"
                 android:textSize="17.5sp"
                 android:lineSpacingMultiplier="1.2"
 
@@ -164,19 +163,45 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/formatTextSectionCL"
-        android:visibility="gone"
 
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/grey_toolbar"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         app:layout_constraintBottom_toTopOf="@id/editNoteSectionCL"
 
         app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/clearFormatsButtonIV"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+
+            android:src="@drawable/baseline_format_clear_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/normalTextButtonIV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/light_grey_1" />
+
+        <ImageView
+            android:id="@+id/normalTextButtonIV"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+
+            android:src="@drawable/match_case_24px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/h1ButtonIV"
+            app:layout_constraintStart_toEndOf="@id/clearFormatsButtonIV"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            app:tint="@color/light_grey_1" />
 
         <ImageView
             android:id="@+id/h1ButtonIV"
@@ -186,11 +211,12 @@
 
             android:src="@drawable/format_h1_24px"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/h2ButtonIV"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/light_grey_1" />
+            app:layout_constraintStart_toEndOf="@id/normalTextButtonIV"
+            app:layout_constraintEnd_toStartOf="@id/h2ButtonIV"
+            app:tint="@color/light_grey_1"
+            tools:layout_editor_absoluteX="16dp" />
 
         <ImageView
             android:id="@+id/h2ButtonIV"
@@ -206,11 +232,13 @@
             app:layout_constraintVertical_bias="0.5"
             app:tint="@color/light_grey_1" />
 
+
         <ImageView
             android:id="@+id/boldButtonIV"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_alignParentStart="true"
+
 
             android:src="@drawable/baseline_format_bold_24"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -223,8 +251,8 @@
 
         <ImageView
             android:id="@+id/italicsButtonIV"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
 
             android:src="@drawable/baseline_format_italic_24"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -255,10 +283,10 @@
 
             android:src="@drawable/baseline_format_list_bulleted_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/underlineButtonIV"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
             app:tint="@color/light_grey_1" />
 
 

@@ -10,9 +10,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.example.lumonote.R
 import com.example.lumonote.data.database.DatabaseHelper
 import com.example.lumonote.data.models.Note
 import com.example.lumonote.databinding.ActivityNoteViewBinding
+import com.example.lumonote.utils.FormatHelperFunctions
+import com.example.lumonote.utils.GeneralHelperFunctions
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -25,6 +29,8 @@ class NoteViewActivity : AppCompatActivity() {
     // Stores reference to id of current note being updated, stays -1 if not found
     private var noteID: Int = -1
     private lateinit var retrievedNote: Note
+    private val formatHelpers: FormatHelperFunctions = FormatHelperFunctions()
+    private val generalHelpers: GeneralHelperFunctions = GeneralHelperFunctions()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +56,7 @@ class NoteViewActivity : AppCompatActivity() {
 
             // Parse the modified date as a date object
             val convertedDate = LocalDate.parse(retrievedNote.noteModifiedDate);
-            val retrievedNoteDate = formatDate(convertedDate)
+            val retrievedNoteDate = generalHelpers.formatDate(convertedDate)
 
             // Populate the view note activity UI w/ the pre-existing note data
             noteViewBinding.modifiedDateTV.text = "Edited: $retrievedNoteDate"
@@ -60,7 +66,7 @@ class NoteViewActivity : AppCompatActivity() {
         } else {
 
             // Display the modified date as current date
-            noteViewBinding.modifiedDateTV.text = "Edited: " + formatDate(LocalDate.now())
+            noteViewBinding.modifiedDateTV.text = "Edited: " + generalHelpers.formatDate(LocalDate.now())
         }
 
         noteViewBinding.backButtonIV.setOnClickListener {
@@ -94,28 +100,94 @@ class NoteViewActivity : AppCompatActivity() {
         }
         onBackPressedDispatcher.addCallback(this, callback)
 
+        noteViewBinding.apply {
 
-        // Logic to display text edit element upon clicking text icon
-        noteViewBinding.textFormatButtonIV.setOnClickListener {
-            if (noteViewBinding.formatTextSectionCL.visibility == View.VISIBLE) {
-                noteViewBinding.formatTextSectionCL.visibility = View.GONE // Hide the view
-            } else {
+            textFormatButtonIV.setOnClickListener {
+                toggleTextFormatter()
+            }
+
+            clearFormatsButtonIV.setOnClickListener {
+                formatHelpers.formatText("clear", noteViewBinding)
+            }
+
+            boldButtonIV.setOnClickListener {
+                formatHelpers.formatText("bold",  noteViewBinding)
+            }
+            italicsButtonIV.setOnClickListener {
+                formatHelpers.formatText("italics", noteViewBinding)
+            }
+            underlineButtonIV.setOnClickListener {
+                formatHelpers.formatText("underline", noteViewBinding)
+            }
+
+        }
+
+        // Highlight each text formatting button
+        noteViewBinding.noteContentET.onSelectionChange = { start, end ->
+            if (start != end) {
                 noteViewBinding.formatTextSectionCL.visibility = View.VISIBLE // Show the view
+
+                val selected = noteViewBinding.noteContentET.text?.substring(start, end)
+                Log.d("Selection", "Selected: $selected")
+
+                if (formatHelpers.isAllSpanned("bold", noteViewBinding)) {
+                    //Log.d("FormatBold",  "Point 2")
+                    noteViewBinding.boldButtonIV.imageTintList = ContextCompat.getColorStateList(this,
+                        R.color.gold)
+                }
+                else {
+                    noteViewBinding.boldButtonIV.imageTintList = ContextCompat.getColorStateList(this,
+                        R.color.light_grey_1)
+                }
+
+                if (formatHelpers.isAllSpanned("italics", noteViewBinding)) {
+                    //Log.d("FormatBold",  "Point 2")
+                    noteViewBinding.italicsButtonIV.imageTintList = ContextCompat.getColorStateList(this,
+                        R.color.gold)
+                }
+                else {
+                    noteViewBinding.italicsButtonIV.imageTintList = ContextCompat.getColorStateList(this,
+                        R.color.light_grey_1)
+                }
+
+                if (formatHelpers.isAllSpanned("underline", noteViewBinding)) {
+
+                    Log.d("Underline", "Point 1")
+                    noteViewBinding.underlineButtonIV.imageTintList = ContextCompat.getColorStateList(this,
+                        R.color.gold)
+                }
+                else {
+                    noteViewBinding.underlineButtonIV.imageTintList = ContextCompat.getColorStateList(this,
+                        R.color.light_grey_1)
+                }
+
+                //Log.d("FormatBold",  "Point 4")
+            }
+
+            else {
+                noteViewBinding.boldButtonIV.imageTintList = ContextCompat.getColorStateList(this,
+                    R.color.light_grey_1)
+
+                noteViewBinding.italicsButtonIV.imageTintList = ContextCompat.getColorStateList(this,
+                    R.color.light_grey_1)
+
+                noteViewBinding.underlineButtonIV.imageTintList = ContextCompat.getColorStateList(this,
+                    R.color.light_grey_1)
+
             }
         }
 
-
-        noteViewBinding.boldButtonIV.setOnClickListener {
-            formatText("bold")
-        }
-        noteViewBinding.italicsButtonIV.setOnClickListener {
-            formatText("italics")
-        }
-        noteViewBinding.underlineButtonIV.setOnClickListener {
-            formatText("underline")
-        }
-
     }
+
+
+    private fun toggleTextFormatter () {
+        if (noteViewBinding.formatTextSectionCL.visibility == View.VISIBLE) {
+            noteViewBinding.formatTextSectionCL.visibility = View.GONE // Hide the view
+        } else {
+            noteViewBinding.formatTextSectionCL.visibility = View.VISIBLE // Show the view
+        }
+    }
+
 
     // Submits note to database upon clicking save button
     private fun saveNote() {
@@ -158,108 +230,4 @@ class NoteViewActivity : AppCompatActivity() {
 
     }
 
-    private fun formatDate(date: LocalDate) : String {
-
-        val formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy")
-        val currentDate = date.format(formatter)
-
-        Log.d("FormatDate", currentDate)
-
-        // Extract the date from current date, fix it, replace with fixed version
-
-        // Matches numbers 01 to 31 with a trailing comma
-        val regex = """\b(0[1-9]|1[0-9]|2[0-9]|3[01]),""".toRegex()
-
-        // Find match in the string
-        val currentMonthMatch = regex.find(currentDate)
-
-        // store the numeric part (e.g., "08")
-        var monthString = ""
-
-        if (currentMonthMatch != null) {
-            // Extract the numeric part (e.g., "08")
-            monthString = currentMonthMatch.groupValues[1]
-        } else {
-            Log.d("FormatDate", "No match found")
-        }
-
-        // Convert "08" → 8 → "8,"
-        val fixedMonth = "${monthString.toInt()},"
-
-        // Replace original "08," with "8,"
-        val fixedCurrentDate = currentDate.replace(regex, fixedMonth)
-
-        Log.d("FormatDate", fixedCurrentDate)
-
-
-        val weekDay: DayOfWeek = date.dayOfWeek
-        val weekDayString = weekDay.toString().lowercase().replaceFirstChar { char ->
-            char.titlecaseChar()
-        }
-
-        return "$weekDayString, $fixedCurrentDate"
-
-    }
-
-    fun formatText(type: String) {
-        val selectionStart: Int = noteViewBinding.noteContentET.selectionStart
-        val selectionEnd: Int = noteViewBinding.noteContentET.selectionEnd
-
-        if (selectionStart != selectionEnd) { // Only if text is actually selected
-            val stringBuilder = noteViewBinding.noteContentET.text
-            val selectedText = noteViewBinding.noteContentET.text.getSpans(
-                selectionStart, selectionEnd, StyleSpan::class.java)
-
-
-
-
-            when (type) {
-                "bold" -> {
-
-//                    // Remove only bold spans
-//                    for (span in selectedText) {
-//                        if (span.style == Typeface.BOLD) {
-//                            val spanStart = text.getSpanStart(span)
-//                            val spanEnd = text.getSpanEnd(span)
-//
-//                            // Optional: only remove span if it overlaps with the selection
-//                            if (spanStart < end && spanEnd > start) {
-//                                text.removeSpan(span)
-//                            }
-//                        }
-//                    }
-
-                    stringBuilder.setSpan(
-                        StyleSpan(Typeface.BOLD),
-                        selectionStart,
-                        selectionEnd,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                }
-                "italics" -> {
-                    stringBuilder.setSpan(
-                        StyleSpan(Typeface.ITALIC),
-                        selectionStart,
-                        selectionEnd,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                }
-                "underline" -> {
-                    stringBuilder.setSpan(
-                        UnderlineSpan(),
-                        selectionStart,
-                        selectionEnd,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                }
-                else -> {
-                    Log.e("ViewNoteActivity", "Type: $type does not exist.")
-                }
-            }
-
-            noteViewBinding.noteContentET.text = stringBuilder
-            noteViewBinding.noteContentET.setSelection(selectionStart, selectionEnd)
-
-        }
-    }
 }
