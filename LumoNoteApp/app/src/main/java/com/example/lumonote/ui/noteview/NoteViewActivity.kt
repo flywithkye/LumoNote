@@ -1,10 +1,6 @@
 package com.example.lumonote.ui.noteview
 
-import android.graphics.Typeface
 import android.os.Bundle
-import android.text.Spanned
-import android.text.style.StyleSpan
-import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -15,22 +11,24 @@ import com.example.lumonote.R
 import com.example.lumonote.data.database.DatabaseHelper
 import com.example.lumonote.data.models.Note
 import com.example.lumonote.databinding.ActivityNoteViewBinding
-import com.example.lumonote.utils.FormatHelperFunctions
+import com.example.lumonote.utils.BasicTextHelper
 import com.example.lumonote.utils.GeneralHelperFunctions
-import java.time.DayOfWeek
+import com.example.lumonote.utils.HeaderTextHelper
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 
 class NoteViewActivity : AppCompatActivity() {
 
     private lateinit var noteViewBinding: ActivityNoteViewBinding
     private lateinit var dbConnection: DatabaseHelper
+    private val basicTextHelper: BasicTextHelper = BasicTextHelper()
+    private val headerTextHelper: HeaderTextHelper = HeaderTextHelper()
+    private val generalHelper: GeneralHelperFunctions = GeneralHelperFunctions()
+
     // Stores reference to id of current note being updated, stays -1 if not found
     private var noteID: Int = -1
     private lateinit var retrievedNote: Note
-    private val formatHelpers: FormatHelperFunctions = FormatHelperFunctions()
-    private val generalHelpers: GeneralHelperFunctions = GeneralHelperFunctions()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +54,7 @@ class NoteViewActivity : AppCompatActivity() {
 
             // Parse the modified date as a date object
             val convertedDate = LocalDate.parse(retrievedNote.noteModifiedDate);
-            val retrievedNoteDate = generalHelpers.formatDate(convertedDate)
+            val retrievedNoteDate = generalHelper.formatDate(convertedDate)
 
             // Populate the view note activity UI w/ the pre-existing note data
             noteViewBinding.modifiedDateTV.text = "Edited: $retrievedNoteDate"
@@ -66,7 +64,7 @@ class NoteViewActivity : AppCompatActivity() {
         } else {
 
             // Display the modified date as current date
-            noteViewBinding.modifiedDateTV.text = "Edited: " + generalHelpers.formatDate(LocalDate.now())
+            noteViewBinding.modifiedDateTV.text = "Edited: " + generalHelper.formatDate(LocalDate.now())
         }
 
         noteViewBinding.backButtonIV.setOnClickListener {
@@ -107,17 +105,24 @@ class NoteViewActivity : AppCompatActivity() {
             }
 
             clearFormatsButtonIV.setOnClickListener {
-                formatHelpers.formatText("clear", noteViewBinding)
+                basicTextHelper.formatText("clear", noteViewBinding)
+            }
+
+            h1ButtonIV.setOnClickListener {
+                headerTextHelper.makeHeader("h1", noteViewBinding)
+            }
+            h2ButtonIV.setOnClickListener {
+                headerTextHelper.makeHeader("h2", noteViewBinding)
             }
 
             boldButtonIV.setOnClickListener {
-                formatHelpers.formatText("bold",  noteViewBinding)
+                basicTextHelper.formatText("bold",  noteViewBinding)
             }
             italicsButtonIV.setOnClickListener {
-                formatHelpers.formatText("italics", noteViewBinding)
+                basicTextHelper.formatText("italics", noteViewBinding)
             }
             underlineButtonIV.setOnClickListener {
-                formatHelpers.formatText("underline", noteViewBinding)
+                basicTextHelper.formatText("underline", noteViewBinding)
             }
 
         }
@@ -130,7 +135,8 @@ class NoteViewActivity : AppCompatActivity() {
                 val selected = noteViewBinding.noteContentET.text?.substring(start, end)
                 Log.d("Selection", "Selected: $selected")
 
-                if (formatHelpers.isAllSpanned("bold", noteViewBinding)) {
+
+                if (basicTextHelper.isAllSpanned("bold", noteViewBinding)) {
                     //Log.d("FormatBold",  "Point 2")
                     noteViewBinding.boldButtonIV.imageTintList = ContextCompat.getColorStateList(this,
                         R.color.gold)
@@ -140,7 +146,7 @@ class NoteViewActivity : AppCompatActivity() {
                         R.color.light_grey_1)
                 }
 
-                if (formatHelpers.isAllSpanned("italics", noteViewBinding)) {
+                if (basicTextHelper.isAllSpanned("italics", noteViewBinding)) {
                     //Log.d("FormatBold",  "Point 2")
                     noteViewBinding.italicsButtonIV.imageTintList = ContextCompat.getColorStateList(this,
                         R.color.gold)
@@ -150,7 +156,7 @@ class NoteViewActivity : AppCompatActivity() {
                         R.color.light_grey_1)
                 }
 
-                if (formatHelpers.isAllSpanned("underline", noteViewBinding)) {
+                if (basicTextHelper.isAllSpanned("underline", noteViewBinding)) {
 
                     Log.d("Underline", "Point 1")
                     noteViewBinding.underlineButtonIV.imageTintList = ContextCompat.getColorStateList(this,

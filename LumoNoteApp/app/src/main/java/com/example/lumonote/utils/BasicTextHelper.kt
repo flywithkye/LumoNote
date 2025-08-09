@@ -11,7 +11,7 @@ import android.util.Log
 import androidx.core.text.getSpans
 import com.example.lumonote.databinding.ActivityNoteViewBinding
 
-class FormatHelperFunctions {
+class BasicTextHelper {
 
     private val spanDataMap =  HashMap<Int, Triple<String,Int, Int>>()
     private var spanCounter = 0
@@ -97,7 +97,6 @@ class FormatHelperFunctions {
 
 
 
-
     fun formatText(type: String, viewNoteBinding: ActivityNoteViewBinding) {
         val selectionStart: Int = viewNoteBinding.noteContentET.selectionStart
         val selectionEnd: Int = viewNoteBinding.noteContentET.selectionEnd
@@ -117,6 +116,7 @@ class FormatHelperFunctions {
             when (type) {
                 "clear" -> {
                     stringBuilder?.clearSpans()
+
                     spanDataMap.clear()
                 }
 
@@ -209,7 +209,7 @@ class FormatHelperFunctions {
 
 
 
-    private fun removeUnintendedUnderlines(editableText: Editable?) {
+    fun removeUnintendedUnderlines(editableText: Editable?) {
         if (editableText != null) {
             val allUnderlines = editableText.getSpans(0, editableText.length, UnderlineSpan::class.java)
             for (span in allUnderlines) {

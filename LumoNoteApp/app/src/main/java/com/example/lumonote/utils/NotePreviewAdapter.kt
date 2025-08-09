@@ -14,8 +14,8 @@ import com.example.lumonote.ui.noteview.NoteViewActivity
 
 
 // Inherits from RecyclerView.Adapter to allow definition of recycler view behaviour
-class NotesPreviewAdapter(private var notesList: List<Note>, context: Context)
-    : RecyclerView.Adapter<NotesPreviewAdapter.NotePreviewViewHolder>()
+class NotePreviewAdapter(private var notesList: List<Note>, context: Context)
+    : RecyclerView.Adapter<NotePreviewAdapter.NotePreviewViewHolder>()
 {
     // The layout from which this view data is accessed is passed into this later
     class NotePreviewViewHolder (notePreviewView: View) : RecyclerView.ViewHolder(notePreviewView) {

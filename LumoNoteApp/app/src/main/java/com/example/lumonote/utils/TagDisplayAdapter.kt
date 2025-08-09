@@ -15,8 +15,8 @@ import com.example.lumonote.R
 import com.example.lumonote.data.models.Tag
 
 // Inherits from RecyclerView.Adapter to allow definition of recycler view behaviour
-class TagsDisplayAdapter(private var tagsList: List<Tag>, val context: Context)
-    : RecyclerView.Adapter<TagsDisplayAdapter.TagDisplayViewHolder>()
+class TagDisplayAdapter(private var tagsList: List<Tag>, val context: Context)
+    : RecyclerView.Adapter<TagDisplayAdapter.TagDisplayViewHolder>()
 {
     // The layout from which this view data is accessed is passed into this later
     class TagDisplayViewHolder (tagDisplayView: View) : RecyclerView.ViewHolder(tagDisplayView) {

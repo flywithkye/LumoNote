@@ -11,15 +11,15 @@ import com.example.lumonote.data.database.DatabaseHelper
 import com.example.lumonote.data.models.Tag
 import com.example.lumonote.databinding.ActivityMainBinding
 import com.example.lumonote.ui.noteview.NoteViewActivity
-import com.example.lumonote.utils.NotesPreviewAdapter
-import com.example.lumonote.utils.TagsDisplayAdapter
+import com.example.lumonote.utils.NotePreviewAdapter
+import com.example.lumonote.utils.TagDisplayAdapter
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainViewBinding: ActivityMainBinding
     private lateinit var dbConnection: DatabaseHelper
-    private lateinit var notesPreviewAdapter: NotesPreviewAdapter
-    private lateinit var tagsDisplayAdapter: TagsDisplayAdapter
+    private lateinit var notePreviewAdapter: NotePreviewAdapter
+    private lateinit var tagDisplayAdapter: TagDisplayAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,11 +31,11 @@ class MainActivity : AppCompatActivity() {
         dbConnection = DatabaseHelper(this)
 
 
-        notesPreviewAdapter = NotesPreviewAdapter(dbConnection.getAllNotes(), this)
+        notePreviewAdapter = NotePreviewAdapter(dbConnection.getAllNotes(), this)
 
         // Define layout and adapter to use for notes display
         mainViewBinding.notesPreviewRV.layoutManager = StaggeredGridLayoutManager(2, VERTICAL)
-        mainViewBinding.notesPreviewRV.adapter = notesPreviewAdapter
+        mainViewBinding.notesPreviewRV.adapter = notePreviewAdapter
 
 
         dbConnection.insertTag(Tag(1, "All Notes"))
@@ -44,11 +44,11 @@ class MainActivity : AppCompatActivity() {
         dbConnection.insertTag(Tag(4, "Korean"))
         dbConnection.insertTag(Tag(5, "Japanese"))
         dbConnection.insertTag(Tag(6, "Italian"))
-        tagsDisplayAdapter = TagsDisplayAdapter(dbConnection.getAllTags(), this)
+        tagDisplayAdapter = TagDisplayAdapter(dbConnection.getAllTags(), this)
 
         // Define layout and adapter to use for tag display
         mainViewBinding.tagsHolderRV.layoutManager = GridLayoutManager(this, 1, RecyclerView.HORIZONTAL, false)
-        mainViewBinding.tagsHolderRV.adapter = tagsDisplayAdapter
+        mainViewBinding.tagsHolderRV.adapter = tagDisplayAdapter
 
 
         // Log.d("DatePrint", LocalDate.now().toString())
@@ -65,8 +65,8 @@ class MainActivity : AppCompatActivity() {
 
         // This ensures that when new notes are added or notes are edited in the database, the
         // notes displayed are up-to-date
-        notesPreviewAdapter.refreshData(dbConnection.getAllNotes())
+        notePreviewAdapter.refreshData(dbConnection.getAllNotes())
 
-        tagsDisplayAdapter.refreshData(dbConnection.getAllTags())
+        tagDisplayAdapter.refreshData(dbConnection.getAllTags())
     }
 }
