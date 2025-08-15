@@ -21,6 +21,8 @@ class BasicTextHelper (private val editTextView: EditText) {
 
     fun isAllSpanned(spanType: TextStyle): Boolean {
 
+        Log.d("Text Span", "Point 1")
+
         val stringBuilder: Editable? = editTextView.text
         val selectionStart: Int = editTextView.selectionStart
         val selectionEnd: Int = editTextView.selectionEnd
@@ -92,10 +94,11 @@ class BasicTextHelper (private val editTextView: EditText) {
             }
         }
 
-        //Log.d("isAllSpanned", "${spanCheck.all { it }}")
+        //Log.d("isAllSpanned", (spanCheck.all { it } && spanCheck.isNotEmpty()).toString())
+        //Log.d("isAllSpanned", spanCheck.toTypedArray().contentToString())
 
         // check if the selected range has spans
-        return spanCheck.all { it }
+        return spanCheck.all { it } && spanCheck.isNotEmpty()
     }
 
 
@@ -119,8 +122,16 @@ class BasicTextHelper (private val editTextView: EditText) {
 
                 TextStyle.NONE -> {
 
-                    stringBuilder?.clearSpans()
-                    spanDataMap.clear()
+                    val relevantSpans =
+                        stringBuilder?.getSpans<CharacterStyle>(selectionStart, selectionEnd)
+
+                    if (relevantSpans != null) {
+                        for (span in relevantSpans) {
+                            stringBuilder?.removeSpan(span)
+                        }
+                        spanDataMap.clear()
+                    }
+
                 }
 
                 TextStyle.BOLD -> setSpan = toggleBasicFormatting(type, Typeface.BOLD)

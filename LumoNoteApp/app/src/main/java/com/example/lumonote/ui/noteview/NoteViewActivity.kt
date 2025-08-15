@@ -1,7 +1,10 @@
 package com.example.lumonote.ui.noteview
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -9,10 +12,11 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.text.getSpans
 import com.example.lumonote.R
 import com.example.lumonote.data.database.DatabaseHelper
 import com.example.lumonote.data.models.Note
-import com.example.lumonote.data.models.TextHeader
+import com.example.lumonote.data.models.TextSize
 import com.example.lumonote.data.models.TextStyle
 import com.example.lumonote.databinding.ActivityNoteViewBinding
 import com.example.lumonote.utils.BasicTextHelper
@@ -116,13 +120,13 @@ class NoteViewActivity : AppCompatActivity() {
             }
 
             normalTextButtonIV.setOnClickListener {
-                headerTextHelper.formatAsHeader(TextHeader.NORMAL)
+                headerTextHelper.formatAsHeader(TextSize.NORMAL)
             }
             h1ButtonIV.setOnClickListener {
-                headerTextHelper.formatAsHeader(TextHeader.H1)
+                headerTextHelper.formatAsHeader(TextSize.H1)
             }
             h2ButtonIV.setOnClickListener {
-                headerTextHelper.formatAsHeader(TextHeader.H2)
+                headerTextHelper.formatAsHeader(TextSize.H2)
             }
 
             boldButtonIV.setOnClickListener {
@@ -139,31 +143,40 @@ class NoteViewActivity : AppCompatActivity() {
 
         // Highlight each text formatting button
         noteViewBinding.noteContentET.onSelectionChange = { start, end ->
+
+            noteViewBinding.formatTextSectionCL.visibility = View.VISIBLE // Show the view
+
             val noteContent = noteViewBinding.noteContentET
+            val selected = noteContent.text?.substring(start, end)
+            Log.d("Selection", "Selected: $selected")
+
+            val styleSpans = noteContent.text?.getSpans<StyleSpan>(start, end)
+            val underlineSpans = noteContent.text?.getSpans<BasicTextHelper.CustomUnderlineSpan>(start, end)
 
             val relativeSizeSpans = noteContent.text?.getSpans(start,
                 end, RelativeSizeSpan::class.java)
+            Log.d("relativeSizeSpan", relativeSizeSpans?.contentToString() ?: "null")
 
-//            Log.d("relativeSizeSpan", relativeSizeSpans?.contentToString() ?: "null")
-//
-//            if (!relativeSizeSpans.isNullOrEmpty()) {
-//                for (span in relativeSizeSpans) {
-//                    Log.d("Relative Spans", "Span class: ${span::class.java.name}")
-//                }
-//            } else {
-//                Log.d("Relative Spans", "None")
-//            }
-
-            
             if (!relativeSizeSpans.isNullOrEmpty()) {
-                if (relativeSizeSpans[0].sizeChange == TextHeader.H1.scaleFactor){
+                for (span in relativeSizeSpans) {
+                    Log.d("Relative Spans", "Span class: ${span::class.java.name}")
+                }
+            } else {
+                Log.d("Relative Spans", "None")
+            }
+
+
+            if (!relativeSizeSpans.isNullOrEmpty()) {
+
+                if (relativeSizeSpans[0].sizeChange == TextSize.H1.scaleFactor){
                     changeButtonIVColor(noteViewBinding.h1ButtonIV, R.color.gold)
                     changeButtonIVColor(noteViewBinding.h2ButtonIV, R.color.light_grey_1)
                 }
-                else if (relativeSizeSpans[0].sizeChange == TextHeader.H2.scaleFactor){
+                else if (relativeSizeSpans[0].sizeChange == TextSize.H2.scaleFactor){
                     changeButtonIVColor(noteViewBinding.h2ButtonIV, R.color.gold)
                     changeButtonIVColor(noteViewBinding.h1ButtonIV, R.color.light_grey_1)
                 }
+
                 changeButtonIVColor(noteViewBinding.normalTextButtonIV, R.color.light_grey_1)
             }
             else {
@@ -173,49 +186,37 @@ class NoteViewActivity : AppCompatActivity() {
             }
 
 
-            if (start != end) {
-                noteViewBinding.formatTextSectionCL.visibility = View.VISIBLE // Show the view
-
-                val selected = noteContent.text?.substring(start, end)
-                Log.d("Selection", "Selected: $selected")
 
 
-                if (basicTextHelper.isAllSpanned(TextStyle.BOLD)) {
-                    //Log.d("FormatBold",  "Point 2")
+            if (basicTextHelper.isAllSpanned(TextStyle.BOLD) ||
+                styleSpans?.any { it.style == Typeface.BOLD } == true) {
+                //Log.d("FormatBold",  "Point 2")
 
-                    changeButtonIVColor(noteViewBinding.boldButtonIV, R.color.gold)
-                } else {
-                    changeButtonIVColor(noteViewBinding.boldButtonIV, R.color.light_grey_1)
-                }
-
-                if (basicTextHelper.isAllSpanned(TextStyle.ITALICS)) {
-                    //Log.d("FormatBold",  "Point 2")
-
-                    changeButtonIVColor(noteViewBinding.italicsButtonIV, R.color.gold)
-                } else {
-                    changeButtonIVColor(noteViewBinding.italicsButtonIV, R.color.light_grey_1)
-                }
-
-                if (basicTextHelper.isAllSpanned(TextStyle.UNDERLINE)) {
-
-                    changeButtonIVColor(noteViewBinding.underlineButtonIV, R.color.gold)
-                } else {
-                    changeButtonIVColor(noteViewBinding.underlineButtonIV, R.color.light_grey_1)
-                }
-
-                //Log.d("FormatBold",  "Point 4")
-            }
-
-            else {
-                // Ensure buttons are their default colors
+                changeButtonIVColor(noteViewBinding.boldButtonIV, R.color.gold)
+            } else {
                 changeButtonIVColor(noteViewBinding.boldButtonIV, R.color.light_grey_1)
-                changeButtonIVColor(noteViewBinding.italicsButtonIV, R.color.light_grey_1)
-                changeButtonIVColor(noteViewBinding.underlineButtonIV, R.color.light_grey_1)
-
-                changeButtonIVColor(noteViewBinding.normalTextButtonIV, R.color.gold)
-                changeButtonIVColor(noteViewBinding.h1ButtonIV, R.color.light_grey_1)
-                changeButtonIVColor(noteViewBinding.h2ButtonIV, R.color.light_grey_1)
             }
+
+            if (basicTextHelper.isAllSpanned(TextStyle.ITALICS) ||
+                styleSpans?.any { it.style == Typeface.ITALIC } == true) {
+                //Log.d("FormatBold",  "Point 2")
+
+                changeButtonIVColor(noteViewBinding.italicsButtonIV, R.color.gold)
+            } else {
+                changeButtonIVColor(noteViewBinding.italicsButtonIV, R.color.light_grey_1)
+            }
+
+            if (basicTextHelper.isAllSpanned(TextStyle.UNDERLINE) ||
+                underlineSpans?.isNotEmpty() == true) {
+
+                changeButtonIVColor(noteViewBinding.underlineButtonIV, R.color.gold)
+            } else {
+                changeButtonIVColor(noteViewBinding.underlineButtonIV, R.color.light_grey_1)
+            }
+
+            //Log.d("FormatBold",  "Point 4")
+
+
         }
 
     }

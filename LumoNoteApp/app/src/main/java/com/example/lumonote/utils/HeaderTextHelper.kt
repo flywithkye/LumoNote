@@ -6,7 +6,7 @@ import android.text.style.CharacterStyle
 import android.text.style.RelativeSizeSpan
 import android.util.Log
 import android.widget.EditText
-import com.example.lumonote.data.models.TextHeader
+import com.example.lumonote.data.models.TextSize
 
 class HeaderTextHelper(private val editTextView: EditText) {
 
@@ -14,7 +14,7 @@ class HeaderTextHelper(private val editTextView: EditText) {
 
     class CustomRelativeSizeSpan(proportion: Float): RelativeSizeSpan(proportion)
 
-    fun formatAsHeader(type: TextHeader) {
+    fun formatAsHeader(type: TextSize) {
 
         val stringBuilder: Editable? = editTextView.text
         var setSpan: CharacterStyle? = null
@@ -56,7 +56,7 @@ class HeaderTextHelper(private val editTextView: EditText) {
         Log.d("Header", "Point 1")
 
         when (type) {
-            TextHeader.NORMAL -> {
+            TextSize.NORMAL -> {
                 // check if heading size has already been applied
                 if (!relativeSizeSpans.isNullOrEmpty()) {
                     // if so, remove it
@@ -66,9 +66,9 @@ class HeaderTextHelper(private val editTextView: EditText) {
                 }
             }
 
-            TextHeader.H1 -> setSpan = toggleHeader(relativeSizeSpans, TextHeader.H1.scaleFactor)
+            TextSize.H1 -> setSpan = toggleHeader(relativeSizeSpans, TextSize.H1.scaleFactor)
 
-            TextHeader.H2 -> setSpan = toggleHeader(relativeSizeSpans, TextHeader.H2.scaleFactor)
+            TextSize.H2 -> setSpan = toggleHeader(relativeSizeSpans, TextSize.H2.scaleFactor)
         }
 
 
