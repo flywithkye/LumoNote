@@ -100,21 +100,36 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
             >
+            <TextView
+                android:id="@+id/dateLabelTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="3dp"
+                android:paddingRight="10dp"
+
+                android:text="Last Modified:"
+                android:fontFamily="@font/inter"
+                android:textColor="@color/light_grey_3"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </TextView>
 
             <TextView
                 android:id="@+id/modifiedDateTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="6dp"
+                android:paddingTop="3dp"
                 android:paddingRight="10dp"
 
                 android:hint="Weekday, Month XX, XXXX"
                 android:fontFamily="@font/inter"
-                android:textColorHint="@color/light_grey_1"
-                android:textColor="@color/light_grey_1"
+                android:textColorHint="@color/gold"
+                android:textColor="@color/gold"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/dateLabelTV">
 
             </TextView>
 
@@ -122,7 +137,7 @@
                 android:id="@+id/noteTitleET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="13dp"
+                android:paddingTop="17dp"
                 android:paddingBottom="17dp"
                 android:paddingRight="10dp"
                 android:background="@android:color/transparent"

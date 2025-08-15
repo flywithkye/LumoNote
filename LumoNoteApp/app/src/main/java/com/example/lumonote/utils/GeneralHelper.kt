@@ -5,7 +5,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class GeneralHelperFunctions {
+class GeneralHelper {
     fun formatDate(date: LocalDate) : String {
 
         val formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy")

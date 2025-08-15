@@ -15,7 +15,7 @@ import com.example.lumonote.data.models.TextSize
 import com.example.lumonote.data.models.TextStyle
 import com.example.lumonote.databinding.ActivityNoteViewBinding
 import com.example.lumonote.utils.BasicTextHelper
-import com.example.lumonote.utils.GeneralHelperFunctions
+import com.example.lumonote.utils.GeneralHelper
 import com.example.lumonote.utils.HeaderTextHelper
 import java.time.LocalDate
 
@@ -26,7 +26,7 @@ class NoteViewActivity : AppCompatActivity() {
     private lateinit var dbConnection: DatabaseHelper
     private val basicTextHelper: BasicTextHelper = BasicTextHelper()
     private val headerTextHelper: HeaderTextHelper = HeaderTextHelper()
-    private val generalHelper: GeneralHelperFunctions = GeneralHelperFunctions()
+    private val generalHelper: GeneralHelper = GeneralHelper()
 
     // Stores reference to id of current note being updated, stays -1 if not found
     private var noteID: Int = -1
@@ -60,14 +60,14 @@ class NoteViewActivity : AppCompatActivity() {
             val retrievedNoteDate = generalHelper.formatDate(convertedDate)
 
             // Populate the view note activity UI w/ the pre-existing note data
-            noteViewBinding.modifiedDateTV.text = "Edited: $retrievedNoteDate"
+            noteViewBinding.modifiedDateTV.text = retrievedNoteDate
             noteViewBinding.noteTitleET.setText(retrievedNote.noteTitle)
             noteViewBinding.noteContentET.setText(retrievedNote.noteContent)
 
         } else {
 
             // Display the modified date as current date
-            noteViewBinding.modifiedDateTV.text = "Edited: " + generalHelper.formatDate(LocalDate.now())
+            noteViewBinding.modifiedDateTV.text = generalHelper.formatDate(LocalDate.now())
         }
 
         noteViewBinding.backButtonIV.setOnClickListener {
