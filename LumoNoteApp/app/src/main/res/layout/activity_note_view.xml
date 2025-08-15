@@ -218,7 +218,7 @@
             app:layout_constraintStart_toEndOf="@id/clearFormatsButtonIV"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/light_grey_1" />
+            app:tint="@color/gold" />
 
         <ImageView
             android:id="@+id/h1ButtonIV"

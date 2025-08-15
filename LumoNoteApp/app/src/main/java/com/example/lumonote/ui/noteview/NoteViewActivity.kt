@@ -1,6 +1,7 @@
 package com.example.lumonote.ui.noteview
 
 import android.os.Bundle
+import android.text.style.RelativeSizeSpan
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -11,7 +12,7 @@ import androidx.core.content.ContextCompat
 import com.example.lumonote.R
 import com.example.lumonote.data.database.DatabaseHelper
 import com.example.lumonote.data.models.Note
-import com.example.lumonote.data.models.TextSize
+import com.example.lumonote.data.models.TextHeader
 import com.example.lumonote.data.models.TextStyle
 import com.example.lumonote.databinding.ActivityNoteViewBinding
 import com.example.lumonote.utils.BasicTextHelper
@@ -24,8 +25,8 @@ class NoteViewActivity : AppCompatActivity() {
 
     private lateinit var noteViewBinding: ActivityNoteViewBinding
     private lateinit var dbConnection: DatabaseHelper
-    private val basicTextHelper: BasicTextHelper = BasicTextHelper()
-    private val headerTextHelper: HeaderTextHelper = HeaderTextHelper()
+    private lateinit var basicTextHelper: BasicTextHelper
+    private lateinit var headerTextHelper: HeaderTextHelper
     private val generalHelper: GeneralHelper = GeneralHelper()
 
     // Stores reference to id of current note being updated, stays -1 if not found
@@ -40,6 +41,9 @@ class NoteViewActivity : AppCompatActivity() {
         setContentView(noteViewBinding.root)
 
         dbConnection = DatabaseHelper(this)
+
+        basicTextHelper = BasicTextHelper(noteViewBinding.noteContentET)
+        headerTextHelper = HeaderTextHelper(noteViewBinding.noteContentET)
 
         // If an existing note was clicked on rather than the create button
         if (intent.hasExtra("note_id")) {
@@ -85,7 +89,7 @@ class NoteViewActivity : AppCompatActivity() {
             finish()
 
             // Put small notification popup at bottom of screen
-            Toast.makeText(this, "Note Deleted!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Note Deleted", Toast.LENGTH_SHORT).show()
         }
 
         // Calls reference to the save button of id saveButton in activity_create_note.xml
@@ -108,62 +112,109 @@ class NoteViewActivity : AppCompatActivity() {
             }
 
             clearFormatsButtonIV.setOnClickListener {
-                basicTextHelper.formatText(TextStyle.NONE, noteViewBinding.noteContentET)
+                basicTextHelper.formatText(TextStyle.NONE)
             }
 
+            normalTextButtonIV.setOnClickListener {
+                headerTextHelper.formatAsHeader(TextHeader.NORMAL)
+            }
             h1ButtonIV.setOnClickListener {
-                headerTextHelper.makeHeader(TextSize.H1, noteViewBinding.noteContentET)
+                headerTextHelper.formatAsHeader(TextHeader.H1)
             }
             h2ButtonIV.setOnClickListener {
-                headerTextHelper.makeHeader(TextSize.H2, noteViewBinding.noteContentET)
+                headerTextHelper.formatAsHeader(TextHeader.H2)
             }
 
             boldButtonIV.setOnClickListener {
-                basicTextHelper.formatText(TextStyle.BOLD,  noteViewBinding.noteContentET)
+                basicTextHelper.formatText(TextStyle.BOLD)
             }
             italicsButtonIV.setOnClickListener {
-                basicTextHelper.formatText(TextStyle.ITALICS, noteViewBinding.noteContentET)
+                basicTextHelper.formatText(TextStyle.ITALICS)
             }
             underlineButtonIV.setOnClickListener {
-                basicTextHelper.formatText(TextStyle.UNDERLINE, noteViewBinding.noteContentET)
+                basicTextHelper.formatText(TextStyle.UNDERLINE)
             }
 
         }
 
         // Highlight each text formatting button
         noteViewBinding.noteContentET.onSelectionChange = { start, end ->
+            val noteContent = noteViewBinding.noteContentET
+
+            val relativeSizeSpans = noteContent.text?.getSpans(start,
+                end, RelativeSizeSpan::class.java)
+
+//            Log.d("relativeSizeSpan", relativeSizeSpans?.contentToString() ?: "null")
+//
+//            if (!relativeSizeSpans.isNullOrEmpty()) {
+//                for (span in relativeSizeSpans) {
+//                    Log.d("Relative Spans", "Span class: ${span::class.java.name}")
+//                }
+//            } else {
+//                Log.d("Relative Spans", "None")
+//            }
+
+            
+            if (!relativeSizeSpans.isNullOrEmpty()) {
+                if (relativeSizeSpans[0].sizeChange == TextHeader.H1.scaleFactor){
+                    changeButtonIVColor(noteViewBinding.h1ButtonIV, R.color.gold)
+                    changeButtonIVColor(noteViewBinding.h2ButtonIV, R.color.light_grey_1)
+                }
+                else if (relativeSizeSpans[0].sizeChange == TextHeader.H2.scaleFactor){
+                    changeButtonIVColor(noteViewBinding.h2ButtonIV, R.color.gold)
+                    changeButtonIVColor(noteViewBinding.h1ButtonIV, R.color.light_grey_1)
+                }
+                changeButtonIVColor(noteViewBinding.normalTextButtonIV, R.color.light_grey_1)
+            }
+            else {
+                changeButtonIVColor(noteViewBinding.normalTextButtonIV, R.color.gold)
+                changeButtonIVColor(noteViewBinding.h1ButtonIV, R.color.light_grey_1)
+                changeButtonIVColor(noteViewBinding.h2ButtonIV, R.color.light_grey_1)
+            }
+
+
             if (start != end) {
                 noteViewBinding.formatTextSectionCL.visibility = View.VISIBLE // Show the view
 
-                val selected = noteViewBinding.noteContentET.text?.substring(start, end)
+                val selected = noteContent.text?.substring(start, end)
                 Log.d("Selection", "Selected: $selected")
 
 
-                if (basicTextHelper.isAllSpanned(TextStyle.BOLD, noteViewBinding.noteContentET)) {
+                if (basicTextHelper.isAllSpanned(TextStyle.BOLD)) {
                     //Log.d("FormatBold",  "Point 2")
 
                     changeButtonIVColor(noteViewBinding.boldButtonIV, R.color.gold)
+                } else {
+                    changeButtonIVColor(noteViewBinding.boldButtonIV, R.color.light_grey_1)
                 }
 
-                if (basicTextHelper.isAllSpanned(TextStyle.ITALICS, noteViewBinding.noteContentET)) {
+                if (basicTextHelper.isAllSpanned(TextStyle.ITALICS)) {
                     //Log.d("FormatBold",  "Point 2")
 
                     changeButtonIVColor(noteViewBinding.italicsButtonIV, R.color.gold)
+                } else {
+                    changeButtonIVColor(noteViewBinding.italicsButtonIV, R.color.light_grey_1)
                 }
 
-                if (basicTextHelper.isAllSpanned(TextStyle.UNDERLINE, noteViewBinding.noteContentET)) {
+                if (basicTextHelper.isAllSpanned(TextStyle.UNDERLINE)) {
 
                     changeButtonIVColor(noteViewBinding.underlineButtonIV, R.color.gold)
+                } else {
+                    changeButtonIVColor(noteViewBinding.underlineButtonIV, R.color.light_grey_1)
                 }
 
                 //Log.d("FormatBold",  "Point 4")
             }
 
             else {
-                // Ensure buttons are grey by default
+                // Ensure buttons are their default colors
                 changeButtonIVColor(noteViewBinding.boldButtonIV, R.color.light_grey_1)
                 changeButtonIVColor(noteViewBinding.italicsButtonIV, R.color.light_grey_1)
                 changeButtonIVColor(noteViewBinding.underlineButtonIV, R.color.light_grey_1)
+
+                changeButtonIVColor(noteViewBinding.normalTextButtonIV, R.color.gold)
+                changeButtonIVColor(noteViewBinding.h1ButtonIV, R.color.light_grey_1)
+                changeButtonIVColor(noteViewBinding.h2ButtonIV, R.color.light_grey_1)
             }
         }
 
@@ -207,7 +258,7 @@ class NoteViewActivity : AppCompatActivity() {
             finish()
 
             // Put small notification popup at bottom of screen
-            Toast.makeText(this, "Changes Saved!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Changes Saved", Toast.LENGTH_LONG).show()
 
         } else {
             var newNote = Note(0, title, content, created, modified)
@@ -219,7 +270,7 @@ class NoteViewActivity : AppCompatActivity() {
             finish()
 
             // Put small notification popup at bottom of screen
-            Toast.makeText(this, "Note Created!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Note Created", Toast.LENGTH_LONG).show()
         }
 
     }

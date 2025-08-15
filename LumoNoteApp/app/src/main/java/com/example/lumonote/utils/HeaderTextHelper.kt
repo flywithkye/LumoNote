@@ -1,22 +1,24 @@
 package com.example.lumonote.utils
 
+import android.text.Editable
 import android.text.Spanned
 import android.text.style.CharacterStyle
 import android.text.style.RelativeSizeSpan
 import android.util.Log
 import android.widget.EditText
-import androidx.core.text.getSpans
-import com.example.lumonote.data.models.TextSize
+import com.example.lumonote.data.models.TextHeader
 
-class HeaderTextHelper {
+class HeaderTextHelper(private val editTextView: EditText) {
 
-    private val basicTextHelper: BasicTextHelper = BasicTextHelper()
+    private val basicTextHelper: BasicTextHelper = BasicTextHelper(editTextView)
 
     class CustomRelativeSizeSpan(proportion: Float): RelativeSizeSpan(proportion)
 
-    fun makeHeader(type: TextSize, editTextView: EditText) {
+    fun formatAsHeader(type: TextHeader) {
 
-        val stringBuilder = editTextView.text
+        val stringBuilder: Editable? = editTextView.text
+        var setSpan: CharacterStyle? = null
+
         val noteContentEnd = stringBuilder?.length ?: 0 // if text is null, set as 0
         val newLine1stIndex = stringBuilder.toString().indexOf("\n")
         val cursorIndex = editTextView.selectionStart
@@ -43,50 +45,30 @@ class HeaderTextHelper {
             }
         }
 
-        val relativeSizeSpans = stringBuilder?.getSpans<RelativeSizeSpan>(
-            selectionStart,
-            selectionEnd
-        )
-
-        Log.d("relativeSizeSpan", "$relativeSizeSpans")
-
-        if (relativeSizeSpans != null) {
-            for (span in relativeSizeSpans) {
-                Log.d("Spans", "Span class: ${span::class.java.name}")
-            }
-        }
-
         Log.d("SelectionStart", "$selectionStart")
         Log.d("SelectionEnd", "$selectionEnd")
 
-        var setSpan: CharacterStyle? = null
+
+        val relativeSizeSpans = editTextView.text?.getSpans(selectionStart,
+            selectionEnd, RelativeSizeSpan::class.java)
+
 
         Log.d("Header", "Point 1")
 
         when (type) {
-            TextSize.NORMAL -> {
-                //stringBuilder?.clearSpans()
+            TextHeader.NORMAL -> {
+                // check if heading size has already been applied
+                if (!relativeSizeSpans.isNullOrEmpty()) {
+                    // if so, remove it
+                    for (span in relativeSizeSpans) {
+                        stringBuilder?.removeSpan(span)
+                    }
+                }
             }
 
-            TextSize.H1 -> {
+            TextHeader.H1 -> setSpan = toggleHeader(relativeSizeSpans, TextHeader.H1.scaleFactor)
 
-                Log.d("Header", "Point 2")
-
-                setSpan = CustomRelativeSizeSpan(1.4f)
-
-                Log.d("Header", "Point 4a")
-            }
-
-            TextSize.H2 -> {
-
-                Log.d("Header", "Point 5")
-
-                setSpan = CustomRelativeSizeSpan(1.2f)
-            }
-
-            else -> {
-                Log.e("ViewNoteActivity", "Type: $type does not exist.")
-            }
+            TextHeader.H2 -> setSpan = toggleHeader(relativeSizeSpans, TextHeader.H2.scaleFactor)
         }
 
 
@@ -99,8 +81,7 @@ class HeaderTextHelper {
 
         basicTextHelper.removeUnintendedUnderlines(stringBuilder)
 
-        editTextView
-            .text = stringBuilder
+        editTextView.text = stringBuilder
         editTextView.setSelection(selectionStart, selectionEnd)
 
 
@@ -108,7 +89,44 @@ class HeaderTextHelper {
 
 
 
+    private fun toggleHeader(spanList: Array<RelativeSizeSpan>?, scaleFactor: Float)
+        : CharacterStyle? {
 
+        val stringBuilder: Editable? = editTextView.text
+
+        Log.d("relativeSizeSpan", spanList.contentToString())
+
+        if (!spanList.isNullOrEmpty()) {
+            for (span in spanList) {
+                Log.d("Relative Spans", "Span class: ${span::class.java.name}")
+            }
+        } else {
+            Log.d("Relative Spans", "None")
+        }
+
+
+
+        // check if heading size has already been applied
+        if (spanList.isNullOrEmpty()) {
+            // If not, add it
+            return RelativeSizeSpan(scaleFactor)
+        }
+        else if (spanList.isNotEmpty()) {
+            // If different header was applied, replace it
+            for (span in spanList) {
+                stringBuilder?.removeSpan(span)
+            }
+            return RelativeSizeSpan(scaleFactor)
+        }
+        else {
+            // if so, remove it (toggle)
+            for (span in spanList) {
+                stringBuilder?.removeSpan(span)
+            }
+            return null
+        }
+
+    }
 
 
 }
