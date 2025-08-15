@@ -42,7 +42,7 @@
                 android:fontFamily="@font/inter"
                 android:text="LumoNote."
                 android:textColor="@color/light_grey_1"
-                android:textSize="22sp"
+                android:textSize="22dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,8 +53,8 @@
 
             <ImageView
                 android:id="@+id/searchButtonIV"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
 
                 android:src="@drawable/baseline_search_24"
                 app:layout_constraintBottom_toBottomOf="parent"

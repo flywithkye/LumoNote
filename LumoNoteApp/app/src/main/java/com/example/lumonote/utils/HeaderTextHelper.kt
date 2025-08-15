@@ -1,25 +1,24 @@
 package com.example.lumonote.utils
 
-import android.graphics.Typeface
 import android.text.Spanned
-import android.text.style.AbsoluteSizeSpan
 import android.text.style.CharacterStyle
 import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import android.util.Log
+import android.widget.EditText
 import androidx.core.text.getSpans
-import com.example.lumonote.databinding.ActivityNoteViewBinding
+import com.example.lumonote.data.models.TextSize
 
 class HeaderTextHelper {
 
     private val basicTextHelper: BasicTextHelper = BasicTextHelper()
 
-    fun makeHeader(type: String, viewNoteBinding: ActivityNoteViewBinding) {
-        val noteContent = viewNoteBinding.noteContentET
-        val stringBuilder = noteContent.text
+    class CustomRelativeSizeSpan(proportion: Float): RelativeSizeSpan(proportion)
+
+    fun makeHeader(type: String, editTextView: EditText) {
+        val stringBuilder = editTextView.text
         val noteContentEnd = stringBuilder?.length ?: 0 // if text is null, set as 0
-        val newLine1stIndex =  stringBuilder.toString().indexOf("\n")
-        val cursorIndex = noteContent.selectionStart
+        val newLine1stIndex = stringBuilder.toString().indexOf("\n")
+        val cursorIndex = editTextView.selectionStart
         val newLineNextIndex = stringBuilder.toString().indexOf("\n", cursorIndex, false)
 
         var selectionStart: Int = 0
@@ -43,26 +42,47 @@ class HeaderTextHelper {
             }
         }
 
-        val absoluteSizeSpans =  stringBuilder?.getSpans<AbsoluteSizeSpan>(selectionStart, selectionEnd)
+        val relativeSizeSpans = stringBuilder?.getSpans<RelativeSizeSpan>(
+            selectionStart,
+            selectionEnd
+        )
 
+        Log.d("relativeSizeSpan", "$relativeSizeSpans")
+
+        if (relativeSizeSpans != null) {
+            for (span in relativeSizeSpans) {
+                Log.d("Spans", "Span class: ${span::class.java.name}")
+            }
+        }
 
         Log.d("SelectionStart", "$selectionStart")
         Log.d("SelectionEnd", "$selectionEnd")
 
         var setSpan: CharacterStyle? = null
 
+        Log.d("Header", "Point 1")
+
         when (type) {
-            "normal" -> {
-                stringBuilder?.clearSpans()
+            TextSize.NORMAL.sizeName -> {
+                //stringBuilder?.clearSpans()
             }
 
-            "h1" -> {
-                setSpan = AbsoluteSizeSpan(24, true)
+            TextSize.H1.sizeName -> {
+
+                Log.d("Header", "Point 2")
+
+                setSpan = CustomRelativeSizeSpan(1.4f)
+
+                Log.d("Header", "Point 4a")
             }
 
-            "h2" -> {
-                setSpan = AbsoluteSizeSpan(21, true)
+            TextSize.H2.sizeName -> {
+
+                Log.d("Header", "Point 5")
+
+                setSpan = CustomRelativeSizeSpan(1.2f)
             }
+
             else -> {
                 Log.e("ViewNoteActivity", "Type: $type does not exist.")
             }
@@ -78,8 +98,8 @@ class HeaderTextHelper {
 
         basicTextHelper.removeUnintendedUnderlines(stringBuilder)
 
-        viewNoteBinding.noteContentET.text = stringBuilder
-        viewNoteBinding.noteContentET.setSelection(selectionStart, selectionEnd)
+        editTextView.text = stringBuilder
+        editTextView.setSelection(selectionStart, selectionEnd)
 
 
     }

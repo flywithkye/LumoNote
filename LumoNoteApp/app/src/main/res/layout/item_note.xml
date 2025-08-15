@@ -39,12 +39,11 @@
                 android:id="@+id/titlePreviewTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Title"
                 android:fontFamily="@font/inter"
+                android:text="Title"
                 android:textColor="@color/light_grey_1"
                 android:textSize="18sp"
-                android:textStyle="bold"
-            />
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
