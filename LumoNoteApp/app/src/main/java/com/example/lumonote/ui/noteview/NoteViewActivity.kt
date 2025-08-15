@@ -3,6 +3,7 @@ package com.example.lumonote.ui.noteview
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -107,24 +108,24 @@ class NoteViewActivity : AppCompatActivity() {
             }
 
             clearFormatsButtonIV.setOnClickListener {
-                basicTextHelper.formatText(TextStyle.NONE.styleName, noteViewBinding.noteContentET)
+                basicTextHelper.formatText(TextStyle.NONE, noteViewBinding.noteContentET)
             }
 
             h1ButtonIV.setOnClickListener {
-                headerTextHelper.makeHeader(TextSize.H1.sizeName, noteViewBinding.noteContentET)
+                headerTextHelper.makeHeader(TextSize.H1, noteViewBinding.noteContentET)
             }
             h2ButtonIV.setOnClickListener {
-                headerTextHelper.makeHeader(TextSize.H2.sizeName, noteViewBinding.noteContentET)
+                headerTextHelper.makeHeader(TextSize.H2, noteViewBinding.noteContentET)
             }
 
             boldButtonIV.setOnClickListener {
-                basicTextHelper.formatText(TextStyle.BOLD.styleName,  noteViewBinding.noteContentET)
+                basicTextHelper.formatText(TextStyle.BOLD,  noteViewBinding.noteContentET)
             }
             italicsButtonIV.setOnClickListener {
-                basicTextHelper.formatText(TextStyle.ITALICS.styleName, noteViewBinding.noteContentET)
+                basicTextHelper.formatText(TextStyle.ITALICS, noteViewBinding.noteContentET)
             }
             underlineButtonIV.setOnClickListener {
-                basicTextHelper.formatText(TextStyle.UNDERLINE.styleName, noteViewBinding.noteContentET)
+                basicTextHelper.formatText(TextStyle.UNDERLINE, noteViewBinding.noteContentET)
             }
 
         }
@@ -138,62 +139,47 @@ class NoteViewActivity : AppCompatActivity() {
                 Log.d("Selection", "Selected: $selected")
 
 
-                if (basicTextHelper.isAllSpanned(TextStyle.BOLD.styleName, noteViewBinding.noteContentET)) {
+                if (basicTextHelper.isAllSpanned(TextStyle.BOLD, noteViewBinding.noteContentET)) {
                     //Log.d("FormatBold",  "Point 2")
-                    noteViewBinding.boldButtonIV.imageTintList = ContextCompat.getColorStateList(this,
-                        R.color.gold)
-                }
-                else {
-                    noteViewBinding.boldButtonIV.imageTintList = ContextCompat.getColorStateList(this,
-                        R.color.light_grey_1)
+
+                    changeButtonIVColor(noteViewBinding.boldButtonIV, R.color.gold)
                 }
 
-                if (basicTextHelper.isAllSpanned(TextStyle.ITALICS.styleName, noteViewBinding.noteContentET)) {
+                if (basicTextHelper.isAllSpanned(TextStyle.ITALICS, noteViewBinding.noteContentET)) {
                     //Log.d("FormatBold",  "Point 2")
-                    noteViewBinding.italicsButtonIV.imageTintList = ContextCompat.getColorStateList(this,
-                        R.color.gold)
-                }
-                else {
-                    noteViewBinding.italicsButtonIV.imageTintList = ContextCompat.getColorStateList(this,
-                        R.color.light_grey_1)
+
+                    changeButtonIVColor(noteViewBinding.italicsButtonIV, R.color.gold)
                 }
 
-                if (basicTextHelper.isAllSpanned(TextStyle.UNDERLINE.styleName, noteViewBinding.noteContentET)) {
+                if (basicTextHelper.isAllSpanned(TextStyle.UNDERLINE, noteViewBinding.noteContentET)) {
 
-                    Log.d(TextStyle.UNDERLINE.styleName, "Point 1")
-                    noteViewBinding.underlineButtonIV.imageTintList = ContextCompat.getColorStateList(this,
-                        R.color.gold)
-                }
-                else {
-                    noteViewBinding.underlineButtonIV.imageTintList = ContextCompat.getColorStateList(this,
-                        R.color.light_grey_1)
+                    changeButtonIVColor(noteViewBinding.underlineButtonIV, R.color.gold)
                 }
 
                 //Log.d("FormatBold",  "Point 4")
             }
 
             else {
-                noteViewBinding.boldButtonIV.imageTintList = ContextCompat.getColorStateList(this,
-                    R.color.light_grey_1)
-
-                noteViewBinding.italicsButtonIV.imageTintList = ContextCompat.getColorStateList(this,
-                    R.color.light_grey_1)
-
-                noteViewBinding.underlineButtonIV.imageTintList = ContextCompat.getColorStateList(this,
-                    R.color.light_grey_1)
-
+                // Ensure buttons are grey by default
+                changeButtonIVColor(noteViewBinding.boldButtonIV, R.color.light_grey_1)
+                changeButtonIVColor(noteViewBinding.italicsButtonIV, R.color.light_grey_1)
+                changeButtonIVColor(noteViewBinding.underlineButtonIV, R.color.light_grey_1)
             }
         }
 
     }
 
 
-    private fun toggleTextFormatter () {
+    private fun toggleTextFormatter() {
         if (noteViewBinding.formatTextSectionCL.visibility == View.VISIBLE) {
             noteViewBinding.formatTextSectionCL.visibility = View.GONE // Hide the view
         } else {
             noteViewBinding.formatTextSectionCL.visibility = View.VISIBLE // Show the view
         }
+    }
+
+    private fun changeButtonIVColor(buttonIV: ImageView, color: Int) {
+        buttonIV.imageTintList = ContextCompat.getColorStateList(this, color)
     }
 
 

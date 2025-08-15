@@ -14,7 +14,8 @@ class HeaderTextHelper {
 
     class CustomRelativeSizeSpan(proportion: Float): RelativeSizeSpan(proportion)
 
-    fun makeHeader(type: String, editTextView: EditText) {
+    fun makeHeader(type: TextSize, editTextView: EditText) {
+
         val stringBuilder = editTextView.text
         val noteContentEnd = stringBuilder?.length ?: 0 // if text is null, set as 0
         val newLine1stIndex = stringBuilder.toString().indexOf("\n")
@@ -63,11 +64,11 @@ class HeaderTextHelper {
         Log.d("Header", "Point 1")
 
         when (type) {
-            TextSize.NORMAL.sizeName -> {
+            TextSize.NORMAL -> {
                 //stringBuilder?.clearSpans()
             }
 
-            TextSize.H1.sizeName -> {
+            TextSize.H1 -> {
 
                 Log.d("Header", "Point 2")
 
@@ -76,7 +77,7 @@ class HeaderTextHelper {
                 Log.d("Header", "Point 4a")
             }
 
-            TextSize.H2.sizeName -> {
+            TextSize.H2 -> {
 
                 Log.d("Header", "Point 5")
 
@@ -98,7 +99,8 @@ class HeaderTextHelper {
 
         basicTextHelper.removeUnintendedUnderlines(stringBuilder)
 
-        editTextView.text = stringBuilder
+        editTextView
+            .text = stringBuilder
         editTextView.setSelection(selectionStart, selectionEnd)
 
 

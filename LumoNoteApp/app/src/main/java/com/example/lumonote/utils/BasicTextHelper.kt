@@ -21,7 +21,7 @@ class BasicTextHelper {
 
     class CustomUnderlineSpan : UnderlineSpan()
 
-    fun isAllSpanned(spanType: String, editTextView: EditText): Boolean {
+    fun isAllSpanned(spanType: TextStyle, editTextView: EditText): Boolean {
         val selectionStart: Int = editTextView.selectionStart
         val selectionEnd: Int = editTextView.selectionEnd
 
@@ -57,8 +57,8 @@ class BasicTextHelper {
                 }
 
                 when (spanType) {
-                    TextStyle.BOLD.styleName, TextStyle.ITALICS.styleName -> {
-                        var checkType  = if (spanType == TextStyle.BOLD.styleName) {
+                    TextStyle.BOLD, TextStyle.ITALICS -> {
+                        var checkType  = if (spanType == TextStyle.BOLD) {
                             Typeface.BOLD
                         } else {
                             Typeface.ITALIC
@@ -73,7 +73,7 @@ class BasicTextHelper {
                         }
                     }
 
-                    TextStyle.UNDERLINE.styleName -> {
+                    TextStyle.UNDERLINE -> {
                         if (spans.isNotEmpty() && spans.any { it is CustomUnderlineSpan } ) {
                             spanCheck.add(true)
                             Log.d("CharStyle","Char '${selectedText[i]}' at $i has underline")
@@ -100,7 +100,7 @@ class BasicTextHelper {
 
 
 
-    fun formatText(type: String, editTextView: EditText) {
+    fun formatText(type: TextStyle, editTextView: EditText) {
         val selectionStart: Int = editTextView.selectionStart
         val selectionEnd: Int = editTextView.selectionEnd
 
@@ -109,19 +109,6 @@ class BasicTextHelper {
             val styleSpans =  stringBuilder?.getSpans<StyleSpan>(selectionStart, selectionEnd)
             val underlineSpans =  stringBuilder?.getSpans<CustomUnderlineSpan>(selectionStart, selectionEnd)
 
-            val relativeSizeSpans =  stringBuilder?.getSpans<RelativeSizeSpan>(selectionStart,
-                selectionEnd)
-
-            Log.d("relativeSizeSpans", "${relativeSizeSpans!!::class.java.name}")
-
-            if (relativeSizeSpans != null) {
-                for (span in relativeSizeSpans) {
-                    Log.d("RelativeSpans", "Span class: ${span::class.java.name}")
-                }
-            } else {
-                Log.d("RelativeSpans", "Span class: none")
-            }
-
             var setSpan: CharacterStyle? = null
 
             // hashmap to store past span edits and search for to remove
@@ -129,13 +116,13 @@ class BasicTextHelper {
             // will use to toggle span display
 
             when (type) {
-                TextStyle.NONE.styleName -> {
+                TextStyle.NONE -> {
                     stringBuilder?.clearSpans()
 
                     spanDataMap.clear()
                 }
 
-                TextStyle.BOLD.styleName -> {
+                TextStyle.BOLD -> {
                     Log.d("FormatBold",  "Point 1")
 
                     // check if the selected range has bold spans
@@ -161,7 +148,7 @@ class BasicTextHelper {
 
                 }
 
-                TextStyle.ITALICS.styleName -> {
+                TextStyle.ITALICS -> {
                     // check if the selected range has bold spans
                     if (isAllSpanned(type, editTextView)) {
                         // if there are pre-existing words set to bold, remove the bold
@@ -182,7 +169,7 @@ class BasicTextHelper {
 
                 }
 
-                TextStyle.UNDERLINE.styleName -> {
+                TextStyle.UNDERLINE -> {
                     Log.d("UnderlineSpan", "Point 1")
                     // check if the selected range has bold spans
                     if (isAllSpanned(type, editTextView)) {
