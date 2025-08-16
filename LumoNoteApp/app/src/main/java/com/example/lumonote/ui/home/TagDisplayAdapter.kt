@@ -1,5 +1,6 @@
 package com.example.lumonote.ui.home
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
 import android.util.Log
@@ -16,8 +17,11 @@ import com.example.lumonote.data.models.Tag
 
 // Inherits from RecyclerView.Adapter to allow definition of recycler view behaviour
 class TagDisplayAdapter(private var tagsList: List<Tag>, val context: Context)
-    : RecyclerView.Adapter<TagDisplayAdapter.TagDisplayViewHolder>()
-{
+    : RecyclerView.Adapter<TagDisplayAdapter.TagDisplayViewHolder>(){
+
+    // Track the currently highlighted/selected item
+    private var selectedPosition = 0 // default first item is highlighted
+
     // The layout from which this view data is accessed is passed into this later
     class TagDisplayViewHolder (tagDisplayView: View) : RecyclerView.ViewHolder(tagDisplayView) {
         val tagCardView: CardView = tagDisplayView.findViewById(R.id.tagItemCV)
@@ -37,24 +41,32 @@ class TagDisplayAdapter(private var tagsList: List<Tag>, val context: Context)
         return tagsList.size
     }
 
-    override fun onBindViewHolder(holder: TagDisplayViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TagDisplayViewHolder, @SuppressLint("RecyclerView") position: Int) {
         // Find and store the equivalent tag object in the list meant to be same as in UI
         val tag = tagsList[position]
+        // Populate the UI tag at that position
+        holder.tagName.text = tag.tagName
+        // Note: position of the tags can change dynamically at runtime
 
-        if (position == 0) {
+
+        // Apply selected/highlight style
+        if (position == selectedPosition) {
             holder.tagLayoutView.setBackgroundColor(getColor(context, R.color.gold))
             holder.tagName.setTextColor(getColor(context, R.color.dark_grey))
             holder.tagName.setTypeface(null, Typeface.BOLD);
+        } else {
+            // Reset other items to default
+            holder.tagLayoutView.setBackgroundColor(getColor(context, R.color.dark_grey))
+            holder.tagName.setTextColor(getColor(context, R.color.light_grey_2))
+            holder.tagName.setTypeface(null, Typeface.NORMAL);
         }
 
-        // Populate the UI tag at that position with the data from the tag obj at same
-        // index in the list
-        holder.tagName.text = tag.tagName
-
-        // change displayed notes by clicking on tag
+        // Handle click to change selection
         holder.tagCardView.setOnClickListener {
-            // Logic here to change notes
-            Log.d("TagsDisplayAdapter", "Clicked!")
+            val previousPosition = selectedPosition
+            selectedPosition = position
+            notifyItemChanged(previousPosition) // refresh old selected
+            notifyItemChanged(selectedPosition) // refresh new selected
         }
 
 
