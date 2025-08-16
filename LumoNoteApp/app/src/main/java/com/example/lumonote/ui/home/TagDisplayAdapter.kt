@@ -1,4 +1,4 @@
-package com.example.lumonote.utils
+package com.example.lumonote.ui.home
 
 import android.content.Context
 import android.graphics.Typeface

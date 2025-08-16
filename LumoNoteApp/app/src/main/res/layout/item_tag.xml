@@ -37,8 +37,8 @@
 
             android:text="Title"
             android:fontFamily="@font/inter"
-            android:textColor="@color/light_grey_1"
-            android:textSize="15sp"
+            android:textColor="@color/light_grey_2"
+            android:textSize="13sp"
             android:textAlignment="center"
         />
 

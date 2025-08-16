@@ -8,5 +8,6 @@ data class Note(
     val noteContent: String,
 
     val noteCreatedDate: String,
-    val noteModifiedDate: String
+    val noteModifiedDate: String,
+    val notePinned: Boolean
 )

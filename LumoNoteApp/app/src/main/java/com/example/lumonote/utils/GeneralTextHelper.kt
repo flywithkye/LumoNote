@@ -1,11 +1,14 @@
 package com.example.lumonote.utils
 
+import android.content.Context
 import android.util.Log
+import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class GeneralHelper {
+class GeneralTextHelper {
     fun formatDate(date: LocalDate) : String {
 
         val formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy")
@@ -45,7 +48,7 @@ class GeneralHelper {
             char.titlecaseChar()
         }
 
-        return "$weekDayString, $fixedCurrentDate"
+        return "${weekDayString.take(3)}, $fixedCurrentDate"
 
     }
 

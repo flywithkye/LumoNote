@@ -11,8 +11,8 @@ import com.example.lumonote.data.database.DatabaseHelper
 import com.example.lumonote.data.models.Tag
 import com.example.lumonote.databinding.ActivityMainBinding
 import com.example.lumonote.ui.noteview.NoteViewActivity
-import com.example.lumonote.utils.NotePreviewAdapter
-import com.example.lumonote.utils.TagDisplayAdapter
+import com.example.lumonote.ui.noteview.NotePreviewAdapter
+import com.example.lumonote.ui.home.TagDisplayAdapter
 
 class MainActivity : AppCompatActivity() {
 

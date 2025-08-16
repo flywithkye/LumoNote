@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.CharacterStyle
+import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
 import android.util.Log
@@ -12,7 +13,7 @@ import android.widget.EditText
 import androidx.core.text.getSpans
 import com.example.lumonote.data.models.TextStyle
 
-class BasicTextHelper (private val editTextView: EditText) {
+class TextStyleHelper (private val editTextView: EditText) {
 
     private val spanDataMap =  HashMap<Int, Triple<String,Int, Int>>()
     private var spanCounter = 0
@@ -102,6 +103,29 @@ class BasicTextHelper (private val editTextView: EditText) {
     }
 
 
+    fun clearTextStyles() {
+
+        val stringBuilder: Editable? = editTextView.text
+        val selectionStart: Int = editTextView.selectionStart
+        val selectionEnd: Int = editTextView.selectionEnd
+
+        val relevantSpans =
+            stringBuilder?.getSpans<CharacterStyle>(selectionStart, selectionEnd)
+
+        Log.d("Relevant Spans", relevantSpans.contentToString())
+
+        if (relevantSpans != null) {
+            for (span in relevantSpans) {
+                if (span !is RelativeSizeSpan){
+                    stringBuilder?.removeSpan(span)
+                }
+            }
+            spanDataMap.clear()
+        }
+
+    }
+
+
 
     fun formatText(type: TextStyle) {
 
@@ -119,20 +143,6 @@ class BasicTextHelper (private val editTextView: EditText) {
             var setSpan: CharacterStyle? = null
 
             when (type) {
-
-                TextStyle.NONE -> {
-
-                    val relevantSpans =
-                        stringBuilder?.getSpans<CharacterStyle>(selectionStart, selectionEnd)
-
-                    if (relevantSpans != null) {
-                        for (span in relevantSpans) {
-                            stringBuilder?.removeSpan(span)
-                        }
-                        spanDataMap.clear()
-                    }
-
-                }
 
                 TextStyle.BOLD -> setSpan = toggleBasicFormatting(type, Typeface.BOLD)
 
@@ -168,7 +178,7 @@ class BasicTextHelper (private val editTextView: EditText) {
                 setSpan,
                 selectionStart,
                 selectionEnd,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                Spanned.SPAN_INCLUSIVE_INCLUSIVE
             )
 
             removeUnintendedUnderlines(stringBuilder)

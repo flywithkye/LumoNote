@@ -16,32 +16,37 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
 
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         >
 
         <ImageView
             android:id="@+id/backButtonIV"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
             android:layout_alignParentStart="true"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="24dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingRight="0dp"
 
             android:src="@drawable/baseline_arrow_back_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/gold" />
+            app:tint="@color/light_grey_1" />
 
 
         <ImageView
             android:id="@+id/deleteButtonIV"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="32dp"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_marginRight="8dp"
 
             android:src="@drawable/baseline_delete_24"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -52,23 +57,46 @@
 
         <ImageView
             android:id="@+id/replaceButtonIV"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="32dp"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_marginRight="8dp"
 
             android:src="@drawable/baseline_find_replace_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/saveButtonIV"
+            app:layout_constraintEnd_toStartOf="@+id/pinButtonIV"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
             app:tint="@color/light_grey_1" />
 
         <ImageView
-            android:id="@+id/saveButtonIV"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:id="@+id/pinButtonIV"
             android:layout_alignParentEnd="true"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_marginRight="16dp"
+
+            android:src="@drawable/baseline_push_pin_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/saveButtonIV"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            app:tint="@color/light_grey_3" />
+
+        <ImageView
+            android:id="@+id/saveButtonIV"
+            android:layout_alignParentEnd="true"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="24dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="0dp"
 
             android:src="@drawable/baseline_check_24"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -87,9 +115,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingLeft="24dp"
-        android:paddingRight="14dp"
+        android:paddingRight="10dp"
+        android:scrollbars="none"
 
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -98,17 +128,17 @@
             android:layout_height="match_parent"
 
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-            >
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
             <TextView
                 android:id="@+id/dateLabelTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="3dp"
-                android:paddingRight="10dp"
-
-                android:text="Last Modified:"
                 android:fontFamily="@font/inter"
+                android:paddingTop="3dp"
+
+                android:paddingRight="10dp"
+                android:text="Date Modified:"
                 android:textColor="@color/light_grey_3"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -118,32 +148,36 @@
 
             <TextView
                 android:id="@+id/modifiedDateTV"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:hint="Weekday, Month XX, XXXX"
+
                 android:paddingTop="3dp"
                 android:paddingRight="10dp"
-
-                android:hint="Weekday, Month XX, XXXX"
-                android:fontFamily="@font/inter"
-                android:textColorHint="@color/gold"
                 android:textColor="@color/gold"
+                android:textColorHint="@color/gold"
                 android:textSize="14sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dateLabelTV">
 
             </TextView>
 
-            <EditText
+
+            <com.example.lumonote.ui.noteview.SelectableEditText
                 android:id="@+id/noteTitleET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="17dp"
-                android:paddingBottom="17dp"
-                android:paddingRight="10dp"
                 android:background="@android:color/transparent"
-
-                android:hint="Title"
                 android:fontFamily="@font/inter"
+                android:hint="Title"
+                android:paddingTop="20dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
+                android:paddingRight="10dp"
+                android:paddingBottom="17dp"
                 android:textColor="@color/light_grey_1"
                 android:textColorHint="@color/light_grey_3"
                 android:textSize="22sp"
@@ -155,18 +189,21 @@
                 android:id="@+id/noteContentET"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/inter"
+                android:gravity="start|top"
+                android:paddingBottom="150dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
+                android:hint="Make a note..."
+                android:inputType="textMultiLine"
+                android:lineSpacingMultiplier="1.2"
                 android:minHeight="48dp"
                 android:paddingRight="10dp"
-                android:background="@android:color/transparent"
-                android:gravity="start|top"
-                android:hint="Make a note..."
-
-                android:inputType="textMultiLine"
-                android:fontFamily="@font/inter"
                 android:textColor="@color/light_grey_1"
                 android:textColorHint="@color/light_grey_3"
                 android:textSize="15sp"
-                android:lineSpacingMultiplier="1.2"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/noteTitleET"
@@ -177,171 +214,233 @@
     </ScrollView>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/formatTextSectionCL"
-        android:visibility="gone"
-
+    <LinearLayout
+        android:id="@+id/formatTextSectionRL"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/grey_toolbar"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:background="@drawable/black_fab"
+        android:visibility="gone"
+
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@id/editNoteSectionCL"
 
         app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/clearFormatsButtonIV"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentStart="true"
-
-            android:src="@drawable/baseline_format_clear_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/normalTextButtonIV"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/light_grey_1" />
-
-        <ImageView
-            android:id="@+id/normalTextButtonIV"
-            android:layout_width="31dp"
-            android:layout_height="31dp"
-            android:layout_alignParentStart="true"
-
-            android:src="@drawable/match_case_24px"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/h1ButtonIV"
-            app:layout_constraintStart_toEndOf="@id/clearFormatsButtonIV"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/gold" />
-
-        <ImageView
-            android:id="@+id/h1ButtonIV"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentStart="true"
-
-            android:src="@drawable/format_h1_24px"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/normalTextButtonIV"
-            app:layout_constraintEnd_toStartOf="@id/h2ButtonIV"
-            app:tint="@color/light_grey_1"
-            tools:layout_editor_absoluteX="16dp" />
-
-        <ImageView
-            android:id="@+id/h2ButtonIV"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentStart="true"
-
-            android:src="@drawable/format_h2_24px"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/boldButtonIV"
-            app:layout_constraintStart_toEndOf="@id/h1ButtonIV"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/light_grey_1" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/textSizeSectionCL"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/grey_toolbar_left"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginRight="3.5dp"
+            >
 
 
-        <ImageView
-            android:id="@+id/boldButtonIV"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentStart="true"
+            <ImageView
+                android:id="@+id/normalTextButtonIV"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+
+                android:src="@drawable/match_case_24px"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/h1ButtonIV"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/gold" />
+
+            <ImageView
+                android:id="@+id/h1ButtonIV"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+
+                android:src="@drawable/format_h1_24px"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                app:layout_constraintStart_toEndOf="@id/normalTextButtonIV"
+                app:layout_constraintEnd_toStartOf="@id/h2ButtonIV"
+                app:tint="@color/light_grey_1"
+                tools:layout_editor_absoluteX="16dp"
+                />
 
 
-            android:src="@drawable/baseline_format_bold_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/italicsButtonIV"
-            app:layout_constraintStart_toEndOf="@id/h2ButtonIV"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/light_grey_1" />
+            <ImageView
+                android:id="@+id/h2ButtonIV"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+
+                android:src="@drawable/format_h2_24px"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/h1ButtonIV"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                app:tint="@color/light_grey_1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <ImageView
-            android:id="@+id/italicsButtonIV"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/textStyleSectionCL"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/grey_toolbar_right"
+            android:layout_weight="1.5"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
-            android:src="@drawable/baseline_format_italic_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/underlineButtonIV"
-            app:layout_constraintStart_toEndOf="@id/boldButtonIV"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/light_grey_1" />
+            <ImageView
+                android:id="@+id/clearFormatsButtonIV"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
 
-
-        <ImageView
-            android:id="@+id/underlineButtonIV"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-
-            android:src="@drawable/baseline_format_underlined_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/bulletButtonIV"
-            app:layout_constraintStart_toEndOf="@id/italicsButtonIV"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/light_grey_1" />
-
-        <ImageView
-            android:id="@+id/bulletButtonIV"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-
-            android:src="@drawable/baseline_format_list_bulleted_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/underlineButtonIV"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/light_grey_1" />
+                android:src="@drawable/baseline_format_clear_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/boldButtonIV"
+                app:tint="@color/light_grey_1" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/boldButtonIV"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:paddingTop="10dp"
+                android:paddingBottom="9dp"
+
+                android:src="@drawable/baseline_format_bold_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/italicsButtonIV"
+                app:layout_constraintStart_toEndOf="@id/clearFormatsButtonIV"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                app:tint="@color/light_grey_1" />
+
+
+            <ImageView
+                android:id="@+id/italicsButtonIV"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:paddingTop="12dp"
+                android:paddingBottom="9dp"
+
+                android:src="@drawable/baseline_format_italic_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/underlineButtonIV"
+                app:layout_constraintStart_toEndOf="@id/boldButtonIV"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                app:tint="@color/light_grey_1" />
+
+
+            <ImageView
+                android:id="@+id/underlineButtonIV"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:paddingTop="12dp"
+                android:paddingBottom="10dp"
+
+                android:src="@drawable/baseline_format_underlined_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/bulletButtonIV"
+                app:layout_constraintStart_toEndOf="@id/italicsButtonIV"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                app:tint="@color/light_grey_1" />
+
+            <ImageView
+                android:id="@+id/bulletButtonIV"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:paddingTop="11dp"
+                android:paddingBottom="10dp"
+
+                android:src="@drawable/baseline_format_list_bulleted_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/underlineButtonIV"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                app:tint="@color/light_grey_1" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/editNoteSectionCL"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="20dp"
-        android:layout_marginEnd="48dp"
-        android:background="@drawable/gold_toolbar"
-        android:paddingLeft="32dp"
-        android:paddingRight="32dp"
+        android:background="@drawable/grey_toolbar"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
 
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/checkBoxButtonIV"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:id="@+id/colorButtonIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:paddingTop="12dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="12dp"
 
-            android:src="@drawable/baseline_checklist_24"
+            android:src="@drawable/baseline_color_lens_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/dark_grey" />
+            app:tint="@color/light_grey_1" />
+
+        <ImageView
+            android:id="@+id/checkBoxButtonIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:padding="12dp"
+
+            android:src="@drawable/baseline_checklist_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageButtonIV"
+            app:layout_constraintStart_toEndOf="@+id/colorButtonIV"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            app:tint="@color/light_grey_1" />
 
         <ImageView
             android:id="@+id/imageButtonIV"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:padding="12dp"
 
             android:src="@drawable/image_arrow_up_24px"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -349,28 +448,31 @@
             app:layout_constraintStart_toEndOf="@+id/checkBoxButtonIV"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/dark_grey" />
+            app:tint="@color/light_grey_1" />
 
         <ImageView
             android:id="@+id/textFormatButtonIV"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:padding="12dp"
 
             android:src="@drawable/baseline_text_fields_24"
+
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/dark_grey" />
+            app:layout_constraintStart_toEndOf="@id/imageButtonIV"
+            app:layout_constraintEnd_toStartOf="@id/undoButtonIV"
+            app:tint="@color/light_grey_1" />
 
 
         <ImageView
             android:id="@+id/undoButtonIV"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:padding="12dp"
 
             android:src="@drawable/undo_24px"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -378,20 +480,24 @@
             app:layout_constraintStart_toEndOf="@+id/textFormatButtonIV"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/dark_grey" />
+            app:tint="@color/light_grey_3" />
 
 
         <ImageView
             android:id="@+id/redoButtonIV"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:paddingLeft="12dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
 
             android:src="@drawable/redo_24px"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/dark_grey" />
+            app:tint="@color/light_grey_3" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

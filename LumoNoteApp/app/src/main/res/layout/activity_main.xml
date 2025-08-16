@@ -69,6 +69,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scrollbars="none"
 
             android:layout_below="@+id/appTopBarCL">
 
@@ -82,7 +83,9 @@
                 <HorizontalScrollView
                     android:id="@+id/tagScrollViewHSV"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp">
+                    android:layout_height="50dp"
+                    android:scrollbars="none"
+                    >
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -128,8 +131,9 @@
                     android:layout_height="match_parent"
 
                     android:layout_marginTop="64dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp" />
+                    android:paddingBottom="24dp"
+                    android:paddingRight="12dp"
+                />
 
 
             </RelativeLayout>
@@ -180,16 +184,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/navigationSectionCL"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/homeViewIV"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
             android:src="@drawable/note_stack_24px"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/calendarViewIV"
             app:layout_constraintStart_toStartOf="parent"
@@ -199,8 +205,9 @@
 
         <ImageView
             android:id="@+id/calendarViewIV"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
             android:src="@drawable/baseline_calendar_month_24"
 
             app:layout_constraintBottom_toBottomOf="parent"
@@ -209,18 +216,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
-            app:tint="@color/light_grey_1" />
+            app:tint="@color/light_grey_3" />
 
         <ImageView
             android:id="@+id/settingsViewIV"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+
             android:src="@drawable/baseline_settings_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/calendarViewIV"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/light_grey_1" />
+            app:tint="@color/light_grey_3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -8,9 +8,9 @@ import android.util.Log
 import android.widget.EditText
 import com.example.lumonote.data.models.TextSize
 
-class HeaderTextHelper(private val editTextView: EditText) {
+class TextSizeHelper(private val editTextView: EditText) {
 
-    private val basicTextHelper: BasicTextHelper = BasicTextHelper(editTextView)
+    private val textStyleHelper: TextStyleHelper = TextStyleHelper(editTextView)
 
     class CustomRelativeSizeSpan(proportion: Float): RelativeSizeSpan(proportion)
 
@@ -20,31 +20,18 @@ class HeaderTextHelper(private val editTextView: EditText) {
         var setSpan: CharacterStyle? = null
 
         val noteContentEnd = stringBuilder?.length ?: 0 // if text is null, set as 0
-        val newLine1stIndex = stringBuilder.toString().indexOf("\n")
         val cursorIndex = editTextView.selectionStart
-        val newLineNextIndex = stringBuilder.toString().indexOf("\n", cursorIndex, false)
 
-        var selectionStart: Int = 0
-        var selectionEnd =
-            if (newLine1stIndex != -1) {
-                // Edit only the current line (up to a "\n")
-                newLine1stIndex
-            } else {
-                // Where no new lines are inserted, jump to end of text
-                noteContentEnd
-            }
+        // Subtract 1 from the cursor index because upon pressing Enter, the newline ("\n")
+        // is inserted at the cursor, then the cursor moves after it. This ensures the search
+        // start position is before the newly created \n and doesn't include it
+        val newLinePrevIndex = stringBuilder.toString().lastIndexOf("\n", cursorIndex - 1)
+        val newLineNextIndex = stringBuilder.toString().indexOf("\n", cursorIndex)
 
-        // if cursor position is after first occurrence of \n
-        if (cursorIndex > newLine1stIndex) {
-            selectionStart = newLine1stIndex + 1
-            //if there exists a newline after the cursor, make that the end, otherwise end of text
-            selectionEnd = if (newLineNextIndex != -1) {
-                newLineNextIndex
-            } else {
-                noteContentEnd
-            }
-        }
+        val selectionStart = if (newLinePrevIndex != -1)  newLinePrevIndex + 1 else 0
+        val selectionEnd = if (newLineNextIndex != -1) newLineNextIndex else noteContentEnd
 
+        //Log.d("SelectionNewLine", "$newLinePrevIndex")
         Log.d("SelectionStart", "$selectionStart")
         Log.d("SelectionEnd", "$selectionEnd")
 
@@ -76,13 +63,13 @@ class HeaderTextHelper(private val editTextView: EditText) {
             setSpan,
             selectionStart,
             selectionEnd,
-            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            Spanned.SPAN_INCLUSIVE_INCLUSIVE
         )
 
-        basicTextHelper.removeUnintendedUnderlines(stringBuilder)
+        textStyleHelper.removeUnintendedUnderlines(stringBuilder)
 
         editTextView.text = stringBuilder
-        editTextView.setSelection(selectionStart, selectionEnd)
+        editTextView.setSelection(cursorIndex)
 
 
     }

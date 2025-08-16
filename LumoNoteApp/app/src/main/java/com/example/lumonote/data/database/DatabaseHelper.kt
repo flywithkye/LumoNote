@@ -25,6 +25,7 @@ class DatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         private const val NOTE_CONTENT_COLUMN = "NoteContent"
         private const val NOTE_CREATED_COLUMN = "NoteCreated"
         private const val NOTE_MODIFIED_COLUMN = "NoteModified"
+        private const val NOTE_PINNED_COLUMN = "NoteModified"
 
         private const val TAG_TABLE_NAME = "Tags"
         private const val TAG_ID_COLUMN = "TagID"
@@ -97,8 +98,9 @@ class DatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
             val content = cursor.getString(cursor.getColumnIndexOrThrow(NOTE_CONTENT_COLUMN))
             val createdDate = cursor.getString(cursor.getColumnIndexOrThrow(NOTE_CREATED_COLUMN))
             val modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow(NOTE_MODIFIED_COLUMN))
+            val isPinned = cursor.getString(cursor.getColumnIndexOrThrow(NOTE_PINNED_COLUMN))
 
-            val note = Note(id, title, content, createdDate, modifiedDate)
+            val note = Note(id, title, content, createdDate, modifiedDate, isPinned.toBoolean())
 
             // Add collected note to note list
             notesList.add(note)
@@ -146,11 +148,12 @@ class DatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         val content = cursor.getString(cursor.getColumnIndexOrThrow(NOTE_CONTENT_COLUMN))
         val created = cursor.getString(cursor.getColumnIndexOrThrow(NOTE_CREATED_COLUMN))
         val modified = cursor.getString(cursor.getColumnIndexOrThrow(NOTE_MODIFIED_COLUMN))
+        val pinned = cursor.getString(cursor.getColumnIndexOrThrow(NOTE_PINNED_COLUMN))
 
         cursor.close()
         db.close()
 
-        return Note(id, title, content, created, modified)
+        return Note(id, title, content, created, modified, pinned.toBoolean())
     }
 
     // Remove a specific note from the database using its id
