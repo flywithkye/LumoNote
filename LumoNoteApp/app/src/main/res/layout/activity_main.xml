@@ -11,7 +11,7 @@
 
 
     <RelativeLayout
-        android:id="@+id/topMainLayoutLL"
+        android:id="@+id/appTopBarLayoutLL"
         android:layout_width="match_parent"
         android:layout_height="0dp"
 
@@ -53,8 +53,9 @@
 
             <ImageView
                 android:id="@+id/searchButtonIV"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
 
                 android:src="@drawable/baseline_search_24"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -70,73 +71,59 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none"
-
             android:layout_below="@+id/appTopBarCL">
 
             <RelativeLayout
-                android:id="@+id/tagSectionLayoutLL"
+                android:id="@+id/topMainSectionLayoutRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                >
 
-                <HorizontalScrollView
-                    android:id="@+id/tagScrollViewHSV"
+                <RelativeLayout
+                    android:id="@+id/tagSectionLayoutRL"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:scrollbars="none"
-                    >
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_alignParentTop="true">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <!-- Horizontal RecyclerView -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/tagsHolderRV"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="top"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp">
+                        android:layout_height="50dp"
+                        android:paddingEnd="16dp"
+                        android:paddingLeft="42dp"
+                        android:scrollbars="none"
+                        android:clipToPadding="false"/>
 
-                        <ImageView
-                            android:id="@+id/tagAddButtonIV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                    <!-- Floating Add button -->
+                    <ImageView
+                        android:id="@+id/tagAddButtonIV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="12dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="12dp"
+                        android:src="@drawable/baseline_add_24"
+                        app:tint="@color/gold"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"/>
 
-                            android:layout_alignParentLeft="true"
-                            android:paddingRight="4dp"
-                            android:paddingBottom="8dp"
+                </RelativeLayout>
 
-                            android:src="@drawable/baseline_add_24"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.5"
-                            app:tint="@color/gold" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/tagsHolderRV"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toRightOf="@id/tagAddButtonIV"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.5" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                </HorizontalScrollView>
-
+                <!-- Notes preview list below tags section -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/notesPreviewRV"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
-                    android:layout_marginTop="64dp"
                     android:paddingBottom="24dp"
                     android:paddingRight="12dp"
-                />
-
+                    android:layout_below="@id/tagSectionLayoutRL"/>
 
             </RelativeLayout>
+
 
         </ScrollView>
 

@@ -41,7 +41,7 @@ class DatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
 
         // Initializes table in database as well as each column (id, name)
         val createTagTableQuery = "CREATE TABLE $TAG_TABLE_NAME " +
-                "($TAG_ID_COLUMN INTEGER PRIMARY KEY, $TAG_NAME_COLUMN TEXT)"
+                "($TAG_ID_COLUMN INTEGER PRIMARY KEY, $TAG_NAME_COLUMN TEXT UNIQUE)"
 
         db?.execSQL(createNoteTableQuery)
         db?.execSQL(createTagTableQuery)

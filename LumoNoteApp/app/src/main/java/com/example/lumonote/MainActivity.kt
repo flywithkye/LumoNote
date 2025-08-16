@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
@@ -47,7 +48,8 @@ class MainActivity : AppCompatActivity() {
         tagDisplayAdapter = TagDisplayAdapter(dbConnection.getAllTags(), this)
 
         // Define layout and adapter to use for tag display
-        mainViewBinding.tagsHolderRV.layoutManager = GridLayoutManager(this, 1, RecyclerView.HORIZONTAL, false)
+        mainViewBinding.tagsHolderRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        mainViewBinding.tagsHolderRV.setHasFixedSize(true) // optional but avoids measurement issues
         mainViewBinding.tagsHolderRV.adapter = tagDisplayAdapter
 
 
@@ -58,6 +60,17 @@ class MainActivity : AppCompatActivity() {
             var intent = Intent(this, NoteViewActivity::class.java)
             startActivity(intent)
         }
+
+        // Add scroll listener
+        mainViewBinding.tagsHolderRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                // Move the Add button by same scroll distance
+                mainViewBinding.tagAddButtonIV.translationX = -recyclerView.computeHorizontalScrollOffset().toFloat()
+            }
+        })
+
     }
 
     override fun onResume() {
