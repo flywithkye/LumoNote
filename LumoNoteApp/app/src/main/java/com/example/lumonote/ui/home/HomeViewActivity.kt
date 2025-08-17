@@ -26,41 +26,68 @@ class HomeViewActivity : AppCompatActivity() {
         val notePreviewViewFragment = NotePreviewViewFragment()
         val calendarViewFragment = CalendarViewFragment()
         val settingsViewFragment = SettingsViewFragment()
+        val navigationFragments: MutableList<Fragment> =
+            mutableListOf(notePreviewViewFragment, calendarViewFragment,
+                settingsViewFragment)
 
         val navigationButtonIVs: MutableList<ImageView> =
             mutableListOf(homeViewBinding.notesViewIV, homeViewBinding.calendarViewIV,
                 homeViewBinding.settingsViewIV)
 
+
         supportFragmentManager.beginTransaction().apply {
-            replace(homeViewBinding.currentHomeFragmentFL.id, notePreviewViewFragment)
+            add(homeViewBinding.currentHomeFragmentFL.id, notePreviewViewFragment)
+            add(homeViewBinding.currentHomeFragmentFL.id, calendarViewFragment)
+            add(homeViewBinding.currentHomeFragmentFL.id, settingsViewFragment)
+
+            hide(calendarViewFragment)
+            hide(settingsViewFragment)
+
             commit()
         }
 
+        switchToFragment(navigationButtonIVs,homeViewBinding.notesViewIV, navigationFragments,
+            notePreviewViewFragment, R.color.gold, R.color.light_grey_2)
+
 
         homeViewBinding.notesViewIV.setOnClickListener {
-            switchToFragment(navigationButtonIVs, notePreviewViewFragment, homeViewBinding.notesViewIV,
-                R.color.gold, R.color.light_grey_2)
+            switchToFragment(navigationButtonIVs, homeViewBinding.notesViewIV, navigationFragments,
+                notePreviewViewFragment, R.color.gold, R.color.light_grey_2)
         }
 
         homeViewBinding.calendarViewIV.setOnClickListener {
-            switchToFragment(navigationButtonIVs, calendarViewFragment, homeViewBinding.calendarViewIV,
-                R.color.gold, R.color.light_grey_2)
+            switchToFragment(navigationButtonIVs, homeViewBinding.calendarViewIV, navigationFragments,
+                calendarViewFragment, R.color.gold, R.color.light_grey_2)
         }
 
         homeViewBinding.settingsViewIV.setOnClickListener {
-            switchToFragment(navigationButtonIVs, settingsViewFragment, homeViewBinding.settingsViewIV,
-                R.color.gold, R.color.light_grey_2)
+            switchToFragment(navigationButtonIVs, homeViewBinding.settingsViewIV, navigationFragments,
+                settingsViewFragment, R.color.gold, R.color.light_grey_2)
         }
     }
 
 
-    private fun switchToFragment(buttonIVList: MutableList<ImageView>, targetFragment: Fragment,
-                                 targetIV: ImageView, activeColor: Int, inactiveColor: Int) {
+    private fun switchToFragment(buttonIVList: MutableList<ImageView>, targetIV: ImageView,
+                                 fragmentList: MutableList<Fragment>, targetFragment: Fragment,
+                                 activeColor: Int, inactiveColor: Int) {
 
         supportFragmentManager.beginTransaction().apply {
-            replace(homeViewBinding.currentHomeFragmentFL.id, targetFragment)
+            for (fragment in fragmentList) {
+
+                if (fragment == targetFragment) {
+                    //show it
+                    show(fragment)
+                } else {
+                    // hide the rest
+                    hide(fragment)
+                }
+            }
+
             commit()
         }
+
+
+
 
         for (buttonImageView in buttonIVList) {
             if (buttonImageView == targetIV) {
