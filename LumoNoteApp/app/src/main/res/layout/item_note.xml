@@ -24,9 +24,22 @@
         android:paddingTop="19dp"
         android:paddingRight="20dp"
         android:paddingLeft="24dp"
-        android:paddingBottom="12dp"
+        android:paddingBottom="32dp"
         >
 
+
+        <ImageView
+            android:id="@+id/previewPinIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:paddingLeft="40dp"
+            android:layout_gravity="end"
+
+            android:src="@drawable/baseline_push_pin_24"
+            app:tint="@color/light_grey_3"
+            />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -60,19 +73,6 @@
             android:layout_marginBottom="4dp"
         />
 
-
-        <ImageView
-            android:id="@+id/previewPinIV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            android:paddingLeft="48dp"
-            android:layout_gravity="end"
-
-            android:src="@drawable/baseline_push_pin_24"
-            app:tint="@color/light_grey_3"
-            />
 
     </LinearLayout>
 

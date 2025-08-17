@@ -1,24 +1,21 @@
 package com.example.lumonote.ui.home
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.lumonote.R
-import com.example.lumonote.data.database.DatabaseHelper
-import com.example.lumonote.data.models.Tag
 import com.example.lumonote.databinding.ActivityHomeViewBinding
-import com.example.lumonote.ui.noteview.NotePreviewAdapter
-import com.example.lumonote.ui.noteview.NoteViewActivity
+import com.example.lumonote.ui.home.calendar.CalendarViewFragment
+import com.example.lumonote.ui.home.notepreview.NotePreviewViewFragment
+import com.example.lumonote.ui.home.settings.SettingsViewFragment
+import com.example.lumonote.utils.GeneralUIHelper
 
 class HomeViewActivity : AppCompatActivity() {
 
     private lateinit var homeViewBinding: ActivityHomeViewBinding
-    private lateinit var dbConnection: DatabaseHelper
-    private lateinit var notePreviewAdapter: NotePreviewAdapter
-    private lateinit var tagDisplayAdapter: TagDisplayAdapter
+    private val generalUIHelper: GeneralUIHelper = GeneralUIHelper()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_view)
@@ -26,60 +23,53 @@ class HomeViewActivity : AppCompatActivity() {
         homeViewBinding = ActivityHomeViewBinding.inflate(layoutInflater)
         setContentView(homeViewBinding.root)
 
+        val notePreviewViewFragment = NotePreviewViewFragment()
+        val calendarViewFragment = CalendarViewFragment()
+        val settingsViewFragment = SettingsViewFragment()
 
-        dbConnection = DatabaseHelper(this)
+        val navigationButtonIVs: MutableList<ImageView> =
+            mutableListOf(homeViewBinding.notesViewIV, homeViewBinding.calendarViewIV,
+                homeViewBinding.settingsViewIV)
 
-
-        notePreviewAdapter = NotePreviewAdapter(dbConnection.getAllNotes(), this)
-
-        // Define layout and adapter to use for notes display
-        homeViewBinding.notesPreviewRV.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        homeViewBinding.notesPreviewRV.adapter = notePreviewAdapter
-
-
-        dbConnection.insertTag(Tag(1, "All Notes"))
-        dbConnection.insertTag(Tag(2, "School"))
-        dbConnection.insertTag(Tag(3, "Work"))
-        dbConnection.insertTag(Tag(4, "Korean"))
-        dbConnection.insertTag(Tag(5, "Japanese"))
-        dbConnection.insertTag(Tag(6, "Italian"))
-        tagDisplayAdapter = TagDisplayAdapter(dbConnection.getAllTags(), this)
-
-        // Define layout and adapter to use for tag display
-        homeViewBinding.tagsHolderRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        homeViewBinding.tagsHolderRV.setHasFixedSize(true) // optional but avoids measurement issues
-        homeViewBinding.tagsHolderRV.adapter = tagDisplayAdapter
-
-
-        // Log.d("DatePrint", LocalDate.now().toString())
-
-        // Calls reference to the create note floating button in activity_main.xml
-        homeViewBinding.createButtonIV.setOnClickListener {
-            var intent = Intent(this, NoteViewActivity::class.java)
-            startActivity(intent)
+        supportFragmentManager.beginTransaction().apply {
+            replace(homeViewBinding.currentHomeFragmentFL.id, notePreviewViewFragment)
+            commit()
         }
 
-        // Add scroll listener
-        homeViewBinding.tagsHolderRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
 
-                // Move the Add button by same scroll distance
-                homeViewBinding.tagAddButtonIV.translationX = -recyclerView.computeHorizontalScrollOffset().toFloat()
-            }
-        })
+        homeViewBinding.notesViewIV.setOnClickListener {
+            switchToFragment(navigationButtonIVs, notePreviewViewFragment, homeViewBinding.notesViewIV,
+                R.color.gold, R.color.light_grey_2)
+        }
 
+        homeViewBinding.calendarViewIV.setOnClickListener {
+            switchToFragment(navigationButtonIVs, calendarViewFragment, homeViewBinding.calendarViewIV,
+                R.color.gold, R.color.light_grey_2)
+        }
+
+        homeViewBinding.settingsViewIV.setOnClickListener {
+            switchToFragment(navigationButtonIVs, settingsViewFragment, homeViewBinding.settingsViewIV,
+                R.color.gold, R.color.light_grey_2)
+        }
     }
 
 
-    override fun onResume() {
-        super.onResume()
+    private fun switchToFragment(buttonIVList: MutableList<ImageView>, targetFragment: Fragment,
+                                 targetIV: ImageView, activeColor: Int, inactiveColor: Int) {
 
-        // This ensures that when new notes are added or notes are edited in the database, the
-        // notes displayed are up-to-date
-        notePreviewAdapter.refreshData(dbConnection.getAllNotes())
+        supportFragmentManager.beginTransaction().apply {
+            replace(homeViewBinding.currentHomeFragmentFL.id, targetFragment)
+            commit()
+        }
 
-        tagDisplayAdapter.refreshData(dbConnection.getAllTags())
+        for (buttonImageView in buttonIVList) {
+            if (buttonImageView == targetIV) {
+                generalUIHelper.changeButtonIVColor(this, buttonImageView, activeColor)
+            } else {
+                generalUIHelper.changeButtonIVColor(this, buttonImageView, inactiveColor)
+            }
+        }
+
     }
 
 }
