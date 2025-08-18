@@ -19,6 +19,10 @@ class InputViewModel : ViewModel() {
     private val _isEditing = MutableLiveData(false)
     val isEditing: LiveData<Boolean> get() = _isEditing
 
+    // LiveData to track if TextFormatter should be visible
+    private val _openformatter = MutableLiveData(false)
+    val openFormatter: LiveData<Boolean> get() = _openformatter
+
 
     private val _stylespans = MutableLiveData<Array<out StyleSpan>?>()
     val styleSpans: LiveData<Array<out StyleSpan>?> get() = _stylespans
@@ -45,6 +49,9 @@ class InputViewModel : ViewModel() {
     // Call this when EditText gains/loses focus
     fun setEditing(focused: Boolean) {
         _isEditing.value = focused
+    }
+    fun setOpenFormatter(open: Boolean) {
+        _openformatter.value = open
     }
 
     fun setStyleSpans(styleSpans: Array<out StyleSpan>?) {
