@@ -15,7 +15,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/appTopBarCL"
+        android:id="@+id/previewTopBarCL"
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:background="@color/black"
@@ -62,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
-        android:layout_below="@+id/appTopBarCL">
+        android:layout_below="@+id/previewTopBarCL">
 
         <RelativeLayout
             android:id="@+id/topMainSectionLayoutRL"

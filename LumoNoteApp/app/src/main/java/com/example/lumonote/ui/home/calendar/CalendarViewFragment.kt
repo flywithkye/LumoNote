@@ -18,7 +18,7 @@ class CalendarViewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calender_view, container, false)
+        return inflater.inflate(R.layout.fragment_calendar_view, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
