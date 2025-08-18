@@ -1,20 +1,9 @@
 package com.example.lumonote
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
-import com.example.lumonote.data.database.DatabaseHelper
-import com.example.lumonote.data.models.Tag
-import com.example.lumonote.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
 import com.example.lumonote.ui.home.HomeViewActivity
-import com.example.lumonote.ui.noteview.NoteViewActivity
-import com.example.lumonote.ui.noteview.NotePreviewAdapter
-import com.example.lumonote.ui.home.TagDisplayAdapter
 
 class MainActivity : AppCompatActivity() {
 

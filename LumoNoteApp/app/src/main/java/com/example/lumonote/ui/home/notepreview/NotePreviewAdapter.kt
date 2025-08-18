@@ -1,4 +1,4 @@
-package com.example.lumonote.ui.noteview
+package com.example.lumonote.ui.home.notepreview
 
 import android.content.Context
 import android.content.Intent
