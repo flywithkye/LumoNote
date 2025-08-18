@@ -36,6 +36,7 @@ class EditInputFragment : Fragment() {
 
 
 
+    // Called when the Fragment is created (before the UI exists)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -43,6 +44,7 @@ class EditInputFragment : Fragment() {
 
     }
 
+    // Called when the Fragment creates its view
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,6 +54,7 @@ class EditInputFragment : Fragment() {
         return editInputViewBinding.root // return the root view for the fragment
     }
 
+    // Called when the view is created (safe place to interact with UI)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

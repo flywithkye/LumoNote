@@ -3,15 +3,14 @@ package com.example.lumonote.ui.noteview
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.lumonote.R
 import com.example.lumonote.data.models.TextSize
 import com.example.lumonote.data.models.TextStyle
-import com.example.lumonote.databinding.FragmentEditInputBinding
 import com.example.lumonote.databinding.FragmentTextFormatBinding
 import com.example.lumonote.utils.GeneralUIHelper
 import com.example.lumonote.utils.TextSizeHelper
@@ -37,6 +36,7 @@ class TextFormatFragment: Fragment() {
     private var textSizeHelper: TextSizeHelper? = null
 
 
+    // Called when the Fragment is created (before the UI exists)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -44,6 +44,7 @@ class TextFormatFragment: Fragment() {
 
     }
 
+    // Called when the view is created (safe place to interact with UI)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,6 +54,7 @@ class TextFormatFragment: Fragment() {
         return textFormatViewBinding.root // return the root view for the fragment
     }
 
+    // Called when the Fragment creates its view
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
