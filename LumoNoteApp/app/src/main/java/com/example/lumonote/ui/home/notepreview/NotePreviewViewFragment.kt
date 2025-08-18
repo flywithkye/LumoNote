@@ -51,12 +51,13 @@ class NotePreviewViewFragment : Fragment() {
 
         dbConnection = DatabaseHelper(requireContext())
 
-        dbConnection.insertTag(Tag(1, "All Notes"))
-        dbConnection.insertTag(Tag(2, "School"))
-        dbConnection.insertTag(Tag(3, "Work"))
-        dbConnection.insertTag(Tag(4, "Korean"))
-        dbConnection.insertTag(Tag(5, "Japanese"))
-        dbConnection.insertTag(Tag(6, "Italian"))
+
+//        dbConnection.insertTag(Tag(1, "All Notes"))
+//        dbConnection.insertTag(Tag(2, "School"))
+//        dbConnection.insertTag(Tag(3, "Work"))
+//        dbConnection.insertTag(Tag(4, "Korean"))
+//        dbConnection.insertTag(Tag(5, "Japanese"))
+//        dbConnection.insertTag(Tag(6, "Italian"))
 
     }
 

@@ -12,6 +12,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.text.getSpans
+import androidx.lifecycle.ViewModelProvider
 import com.example.lumonote.R
 import com.example.lumonote.data.database.DatabaseHelper
 import com.example.lumonote.data.models.Note
@@ -38,6 +39,9 @@ class NoteViewActivity : AppCompatActivity() {
     private var noteID: Int = -1
     private lateinit var retrievedNote: Note
 
+    private lateinit var inputViewModel: InputViewModel
+    private var editInputFragment: EditInputFragment = EditInputFragment()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +53,14 @@ class NoteViewActivity : AppCompatActivity() {
 
         textStyleHelper = TextStyleHelper(noteViewBinding.noteContentET)
         textSizeHelper = TextSizeHelper(noteViewBinding.noteContentET)
+
+        inputViewModel = ViewModelProvider(this).get(InputViewModel::class.java)
+        inputViewModel.setTextStyleHelper(textStyleHelper)
+        inputViewModel.setTextSizeHelper(textSizeHelper)
+
+        supportFragmentManager.beginTransaction().apply {
+            replace(noteViewBinding.editSectionFC.id, editInputFragment)
+        }
 
         noteViewBinding.noteContentET.clearFocusOnKeyboardHide(noteViewBinding.root)
         noteViewBinding.noteTitleET.clearFocusOnKeyboardHide(noteViewBinding.root)
@@ -136,57 +148,12 @@ class NoteViewActivity : AppCompatActivity() {
         }
         onBackPressedDispatcher.addCallback(this, callback)
 
-        noteViewBinding.apply {
-
-            textFormatButtonIV.setOnClickListener {
-                toggleTextFormatter()
-            }
-
-            normalTextButtonIV.setOnClickListener {
-                textSizeHelper.formatAsHeader(TextSize.NORMAL)
-            }
-            h1ButtonIV.setOnClickListener {
-                textSizeHelper.formatAsHeader(TextSize.H1)
-            }
-            h2ButtonIV.setOnClickListener {
-                textSizeHelper.formatAsHeader(TextSize.H2)
-            }
-
-
-            boldButtonIV.setOnClickListener {
-                textStyleHelper.formatText(TextStyle.BOLD)
-            }
-            italicsButtonIV.setOnClickListener {
-                textStyleHelper.formatText(TextStyle.ITALICS)
-            }
-            underlineButtonIV.setOnClickListener {
-                textStyleHelper.formatText(TextStyle.UNDERLINE)
-            }
-
-        }
-
-
-        noteViewBinding.clearFormatsButtonIV.setOnClickListener {
-
-            textStyleHelper.clearTextStyles()
-
-            generalUIHelper.changeButtonIVColor(this, noteViewBinding.boldButtonIV,
-                R.color.light_grey_1)
-            generalUIHelper.changeButtonIVColor(this, noteViewBinding.italicsButtonIV,
-                R.color.light_grey_1)
-            generalUIHelper.changeButtonIVColor(this, noteViewBinding.underlineButtonIV,
-                R.color.light_grey_1)
-        }
-
 
         // Remove text formatter when text content not being edited
         noteViewBinding.noteContentET.setOnFocusChangeListener {_, hasFocus ->
-            if (!hasFocus) {
-                textFormatterOff()
-            } else {
-                textFormatterOn()
-            }
+            inputViewModel.setEditing(hasFocus)
         }
+
         // Highlight each text formatting button
         noteViewBinding.noteContentET.onSelectionChange = { start, end ->
 
@@ -202,102 +169,15 @@ class NoteViewActivity : AppCompatActivity() {
                 end, RelativeSizeSpan::class.java)
             Log.d("relativeSizeSpan", relativeSizeSpans?.contentToString() ?: "null")
 
-            if (!relativeSizeSpans.isNullOrEmpty()) {
-                for (span in relativeSizeSpans) {
-                    Log.d("Relative Spans", "Span class: ${span::class.java.name}")
-                }
-            } else {
-                Log.d("Relative Spans", "None")
-            }
+            inputViewModel.setSelectionStart(start)
+            inputViewModel.setSelectionEnd(end)
 
-
-            if (!relativeSizeSpans.isNullOrEmpty()) {
-
-                if (relativeSizeSpans[0].sizeChange == TextSize.H1.scaleFactor){
-                    generalUIHelper.changeButtonIVColor(this, noteViewBinding.h1ButtonIV,
-                        R.color.gold)
-                    generalUIHelper.changeButtonIVColor(this, noteViewBinding.h2ButtonIV,
-                        R.color.light_grey_1)
-                }
-                else if (relativeSizeSpans[0].sizeChange == TextSize.H2.scaleFactor){
-                    generalUIHelper.changeButtonIVColor(this, noteViewBinding.h2ButtonIV,
-                        R.color.gold)
-                    generalUIHelper.changeButtonIVColor(this, noteViewBinding.h1ButtonIV,
-                        R.color.light_grey_1)
-                }
-
-                generalUIHelper.changeButtonIVColor(this, noteViewBinding.normalTextButtonIV,
-                    R.color.light_grey_1)
-            }
-            else {
-                generalUIHelper.changeButtonIVColor(this, noteViewBinding.normalTextButtonIV,
-                    R.color.gold)
-                generalUIHelper.changeButtonIVColor(this, noteViewBinding.h1ButtonIV,
-                    R.color.light_grey_1)
-                generalUIHelper.changeButtonIVColor(this, noteViewBinding.h2ButtonIV,
-                    R.color.light_grey_1)
-            }
-
-
-
-
-            if (textStyleHelper.isAllSpanned(TextStyle.BOLD) ||
-                (styleSpans?.any { it.style == Typeface.BOLD } == true && start == end) ) {
-                //Log.d("FormatBold",  "Point 2")
-
-                generalUIHelper.changeButtonIVColor(this, noteViewBinding.boldButtonIV,
-                    R.color.gold)
-            } else {
-                generalUIHelper.changeButtonIVColor(this, noteViewBinding.boldButtonIV,
-                    R.color.light_grey_1)
-            }
-
-            if (textStyleHelper.isAllSpanned(TextStyle.ITALICS) ||
-                (styleSpans?.any { it.style == Typeface.ITALIC } == true && start == end) ) {
-                //Log.d("FormatBold",  "Point 2")
-
-                generalUIHelper.changeButtonIVColor(this, noteViewBinding.italicsButtonIV,
-                    R.color.gold)
-            } else {
-                generalUIHelper.changeButtonIVColor(this, noteViewBinding.italicsButtonIV,
-                    R.color.light_grey_1)
-            }
-
-            if (textStyleHelper.isAllSpanned(TextStyle.UNDERLINE) ||
-                (underlineSpans?.isNotEmpty() == true && start == end) ) {
-
-                generalUIHelper.changeButtonIVColor(this, noteViewBinding.underlineButtonIV,
-                    R.color.gold)
-            } else {
-                generalUIHelper.changeButtonIVColor(this, noteViewBinding.underlineButtonIV,
-                    R.color.light_grey_1)
-            }
-
-            //Log.d("FormatBold",  "Point 4")
-
+            inputViewModel.setStyleSpans(styleSpans)
+            inputViewModel.setUnderlineSpans(underlineSpans)
+            inputViewModel.setRelativeSizeSpans(relativeSizeSpans)
 
         }
 
-    }
-
-    private fun textFormatterOn() {
-        // Show the view
-        noteViewBinding.formatTextSectionRL.visibility = View.VISIBLE
-        generalUIHelper.changeButtonIVColor(this, noteViewBinding.textFormatButtonIV, R.color.gold)
-    }
-
-    private fun textFormatterOff() {
-        // Hide the view
-        noteViewBinding.formatTextSectionRL.visibility = View.GONE
-        generalUIHelper.changeButtonIVColor(this, noteViewBinding.textFormatButtonIV, R.color.light_grey_1)
-    }
-
-    private fun toggleTextFormatter() {
-        if (noteViewBinding.formatTextSectionRL.visibility == View.VISIBLE) {
-            textFormatterOff()
-        } else {
-            textFormatterOn()
-        }
     }
 
 
