@@ -133,46 +133,62 @@ class TextStyleHelper (private val editTextView: EditText) {
         val selectionStart: Int = editTextView.selectionStart
         val selectionEnd: Int = editTextView.selectionEnd
 
-        if (selectionStart != selectionEnd) { // Only if text is actually selected
-
-            // hashmap to store past span edits and search for to remove
-            // search hashmap to see if selected text contains indices that has style applied to it
-            // will use to toggle span display
+        // hashmap to store past span edits and search for to remove
+        // search hashmap to see if selected text contains indices that has style applied to it
+        // will use to toggle span display
 
 
-            var setSpan: CharacterStyle? = null
+        var setSpan: CharacterStyle? = null
 
-            when (type) {
+        when (type) {
 
-                TextStyle.BOLD -> setSpan = toggleBasicFormatting(type, Typeface.BOLD)
+            TextStyle.BOLD -> setSpan = toggleBasicFormatting(type, Typeface.BOLD)
 
-                TextStyle.ITALICS -> setSpan = toggleBasicFormatting(type, Typeface.ITALIC)
+            TextStyle.ITALICS -> setSpan = toggleBasicFormatting(type, Typeface.ITALIC)
 
-                TextStyle.UNDERLINE -> {
+            TextStyle.UNDERLINE -> {
 
-                    val underlineSpans =
-                        stringBuilder?.getSpans<CustomUnderlineSpan>(selectionStart, selectionEnd)
+                val underlineSpans =
+                    stringBuilder?.getSpans<CustomUnderlineSpan>(selectionStart, selectionEnd)
 
-                    Log.d("UnderlineSpan", "Point 1")
-                    // check if the selected range has underline spans
-                    if (isAllSpanned(type)) {
-                        // if there are pre-existing words set to underline, remove it
-                        if (underlineSpans != null) {
-                            for (span in underlineSpans) {
-                                stringBuilder?.removeSpan(span)
-                            }
+                Log.d("UnderlineSpan", "Point 1")
+                // check if the selected range has underline spans
+                if (isAllSpanned(type)) {
+                    // if there are pre-existing words set to underline, remove it
+                    if (underlineSpans != null) {
+                        for (span in underlineSpans) {
+                            stringBuilder?.removeSpan(span)
                         }
-                    } else {
-                        // if not, add the underline to everything
-                        setSpan = CustomUnderlineSpan()
                     }
+                } else {
+                    // if not, add the underline to everything
+                    setSpan = CustomUnderlineSpan()
                 }
-
             }
 
+        }
 
-            spanDataMap[spanCounter] = Triple(type.styleName, selectionStart, selectionEnd)
-            spanCounter++
+
+
+        spanDataMap[spanCounter] = Triple(type.styleName, selectionStart, selectionEnd)
+        spanCounter++
+
+
+        if (selectionStart != selectionEnd) { // Only if text is actually selected
+
+            stringBuilder?.setSpan(
+                setSpan,
+                selectionStart,
+                selectionEnd,
+                Spanned.SPAN_EXCLUSIVE_INCLUSIVE
+            )
+
+            removeUnintendedUnderlines(stringBuilder)
+
+            editTextView.text = stringBuilder
+            editTextView.setSelection(selectionStart, selectionEnd)
+
+        } else {
 
             stringBuilder?.setSpan(
                 setSpan,
@@ -184,9 +200,11 @@ class TextStyleHelper (private val editTextView: EditText) {
             removeUnintendedUnderlines(stringBuilder)
 
             editTextView.text = stringBuilder
-            editTextView.setSelection(selectionStart, selectionEnd)
+            editTextView.setSelection(selectionStart)
 
         }
+
+
     }
 
 
