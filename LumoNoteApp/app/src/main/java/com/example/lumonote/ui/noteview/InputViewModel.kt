@@ -10,40 +10,42 @@ import com.example.lumonote.utils.TextStyleHelper
 
 class InputViewModel : ViewModel() {
 
-    private val _textstylehelper = MutableLiveData<TextStyleHelper>()
-    val textStyleHelper: LiveData<TextStyleHelper> get() = _textstylehelper
-    private val _textsizehelper = MutableLiveData<TextSizeHelper>()
-    val textSizeHelper: LiveData<TextSizeHelper> get() = _textsizehelper
+    private val _textStyleHelper
+    = MutableLiveData<TextStyleHelper>()
+    val textStyleHelper: LiveData<TextStyleHelper> get() = _textStyleHelper
+
+    private val _textSizeHelper = MutableLiveData<TextSizeHelper>()
+    val textSizeHelper: LiveData<TextSizeHelper> get() = _textSizeHelper
 
     // LiveData to track if EditText is focused
     private val _isEditing = MutableLiveData(false)
     val isEditing: LiveData<Boolean> get() = _isEditing
 
     // LiveData to track if TextFormatter should be visible
-    private val _openformatter = MutableLiveData(false)
-    val openFormatter: LiveData<Boolean> get() = _openformatter
+    private val _openFormatter = MutableLiveData(false)
+    val openFormatter: LiveData<Boolean> get() = _openFormatter
 
 
-    private val _stylespans = MutableLiveData<Array<out StyleSpan>?>()
-    val styleSpans: LiveData<Array<out StyleSpan>?> get() = _stylespans
-    private val _underlinespans = MutableLiveData<Array<out TextStyleHelper.CustomUnderlineSpan>?>()
-    val underlineSpans: LiveData<Array<out TextStyleHelper.CustomUnderlineSpan>?> get() = _underlinespans
-    private val _relativesizespans = MutableLiveData<Array<out RelativeSizeSpan>?>()
-    val relativeSizeSpans: LiveData<Array<out RelativeSizeSpan>?> get() = _relativesizespans
+    private val _styleSpans = MutableLiveData<Array<out StyleSpan>?>()
+    val styleSpans: LiveData<Array<out StyleSpan>?> get() = _styleSpans
+    private val _underlineSpans = MutableLiveData<Array<out TextStyleHelper.CustomUnderlineSpan>?>()
+    val underlineSpans: LiveData<Array<out TextStyleHelper.CustomUnderlineSpan>?> get() = _underlineSpans
+    private val _relativeSizeSpans = MutableLiveData<Array<out RelativeSizeSpan>?>()
+    val relativeSizeSpans: LiveData<Array<out RelativeSizeSpan>?> get() = _relativeSizeSpans
 
-    private val _selectionstart = MutableLiveData<Int>()
-    val selectionStart: LiveData<Int> get() = _selectionstart
-    private val _selectionend = MutableLiveData<Int>()
-    val selectionEnd: LiveData<Int> get() = _selectionend
+    private val _selectionStart = MutableLiveData<Int>()
+    val selectionStart: LiveData<Int> get() = _selectionStart
+    private val _selectionEnd = MutableLiveData<Int>()
+    val selectionEnd: LiveData<Int> get() = _selectionEnd
 
 
 
     fun setTextStyleHelper(textStyleHelper: TextStyleHelper) {
-        _textstylehelper.value = textStyleHelper
+        _textStyleHelper.value = textStyleHelper
     }
 
     fun setTextSizeHelper(textSizeHelper: TextSizeHelper) {
-        _textsizehelper.value = textSizeHelper
+        _textSizeHelper.value = textSizeHelper
     }
 
     // Call this when EditText gains/loses focus
@@ -51,24 +53,24 @@ class InputViewModel : ViewModel() {
         _isEditing.value = focused
     }
     fun setOpenFormatter(open: Boolean) {
-        _openformatter.value = open
+        _openFormatter.value = open
     }
 
     fun setStyleSpans(styleSpans: Array<out StyleSpan>?) {
-        _stylespans.value = styleSpans
+        _styleSpans.value = styleSpans
     }
     fun setUnderlineSpans(underlineSpans: Array<out TextStyleHelper.CustomUnderlineSpan>?) {
-        _underlinespans.value = underlineSpans
+        _underlineSpans.value = underlineSpans
     }
     fun setRelativeSizeSpans(relativeSizeSpans: Array<out RelativeSizeSpan>?) {
-        _relativesizespans.value = relativeSizeSpans
+        _relativeSizeSpans.value = relativeSizeSpans
     }
 
     fun setSelectionStart(selectionStart: Int) {
-        _selectionstart.value = selectionStart
+        _selectionStart.value = selectionStart
     }
     fun setSelectionEnd(selectionEnd: Int) {
-        _selectionend.value = selectionEnd
+        _selectionEnd.value = selectionEnd
     }
 
 
