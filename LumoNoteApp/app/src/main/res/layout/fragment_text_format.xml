@@ -27,11 +27,10 @@
 
         <ImageView
             android:id="@+id/normalTextButtonIV"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:padding="7dp"
 
             android:src="@drawable/match_case_24px"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -42,11 +41,11 @@
 
         <ImageView
             android:id="@+id/h1ButtonIV"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
-            android:paddingTop="7dp"
-            android:paddingBottom="7dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
 
             android:src="@drawable/format_h1_24px"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -61,11 +60,11 @@
 
         <ImageView
             android:id="@+id/h2ButtonIV"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
-            android:paddingTop="7dp"
-            android:paddingBottom="7dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
 
             android:src="@drawable/format_h2_24px"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -89,11 +88,13 @@
 
         <ImageView
             android:id="@+id/clearFormatsButtonIV"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
 
             android:src="@drawable/baseline_format_clear_24"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -105,11 +106,13 @@
 
         <ImageView
             android:id="@+id/boldButtonIV"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:paddingTop="10dp"
-            android:paddingBottom="9dp"
+            android:paddingBottom="7dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
 
             android:src="@drawable/baseline_format_bold_24"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -122,11 +125,13 @@
 
         <ImageView
             android:id="@+id/italicsButtonIV"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:paddingTop="12dp"
             android:paddingBottom="9dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
 
             android:src="@drawable/baseline_format_italic_24"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -139,11 +144,13 @@
 
         <ImageView
             android:id="@+id/underlineButtonIV"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:paddingTop="12dp"
             android:paddingBottom="10dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
 
             android:src="@drawable/baseline_format_underlined_24"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -155,11 +162,13 @@
 
         <ImageView
             android:id="@+id/bulletButtonIV"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:paddingTop="11dp"
             android:paddingBottom="10dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
 
             android:src="@drawable/baseline_format_list_bulleted_24"
             app:layout_constraintBottom_toBottomOf="parent"
