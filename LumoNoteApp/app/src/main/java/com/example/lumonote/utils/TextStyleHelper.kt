@@ -133,49 +133,41 @@ class TextStyleHelper (private val editTextView: EditText) {
         val selectionStart: Int = editTextView.selectionStart
         val selectionEnd: Int = editTextView.selectionEnd
 
-        // hashmap to store past span edits and search for to remove
-        // search hashmap to see if selected text contains indices that has style applied to it
-        // will use to toggle span display
-
-
         var setSpan: CharacterStyle? = null
 
         when (type) {
-
             TextStyle.BOLD -> setSpan = toggleBasicFormatting(type, Typeface.BOLD)
-
             TextStyle.ITALICS -> setSpan = toggleBasicFormatting(type, Typeface.ITALIC)
 
             TextStyle.UNDERLINE -> {
-
                 val underlineSpans =
                     stringBuilder?.getSpans<CustomUnderlineSpan>(selectionStart, selectionEnd)
 
-                Log.d("UnderlineSpan", "Point 1")
-                // check if the selected range has underline spans
+                // If selected text already has underline, remove it
                 if (isAllSpanned(type)) {
-                    // if there are pre-existing words set to underline, remove it
                     if (underlineSpans != null) {
                         for (span in underlineSpans) {
                             stringBuilder?.removeSpan(span)
                         }
                     }
                 } else {
-                    // if not, add the underline to everything
+                    // Otherwise add underline
                     setSpan = CustomUnderlineSpan()
                 }
             }
-
         }
 
 
-
+        // store in your map
         spanDataMap[spanCounter] = Triple(type.styleName, selectionStart, selectionEnd)
         spanCounter++
 
-
-        if (selectionStart != selectionEnd) { // Only if text is actually selected
-
+        if (setSpan == null) {
+            editTextView.text = stringBuilder
+            editTextView.setSelection(selectionStart)
+        }
+        if (selectionStart != selectionEnd) {
+            // User selected a range of text
             stringBuilder?.setSpan(
                 setSpan,
                 selectionStart,
@@ -189,23 +181,27 @@ class TextStyleHelper (private val editTextView: EditText) {
             editTextView.setSelection(selectionStart, selectionEnd)
 
         } else {
+            // Cursor only (no selection) → we want new text to inherit formatting
 
+            // Insert invisible character
+            stringBuilder?.insert(selectionStart, "\u200B")
+
+            // Apply the style span OVER the invisible character
             stringBuilder?.setSpan(
                 setSpan,
                 selectionStart,
-                selectionEnd,
-                Spanned.SPAN_INCLUSIVE_INCLUSIVE
+                selectionStart + 1,
+                Spanned.SPAN_EXCLUSIVE_INCLUSIVE // ← inclusive at end so new chars inherit style
             )
 
             removeUnintendedUnderlines(stringBuilder)
 
             editTextView.text = stringBuilder
-            editTextView.setSelection(selectionStart)
-
+            // Place cursor after the ZWSP
+            editTextView.setSelection(selectionStart + 1)
         }
-
-
     }
+
 
 
 
@@ -217,8 +213,13 @@ class TextStyleHelper (private val editTextView: EditText) {
 
         val styleSpans = stringBuilder?.getSpans<StyleSpan>(selectionStart, selectionEnd)
 
+        Log.d("togBasicFormat", styleSpans.contentToString())
+
+
         // check if all the selected range has the desired style spans
-        if (isAllSpanned(type)) {
+        if (isAllSpanned(type) || (styleSpans?.size == 1 && selectionStart == selectionEnd)) {
+
+//            if (styleSpans?.size == 1 && selectionStart == selectionEnd) return null
 
             // if there are pre-existing words set to that style span, remove it (bold or italics)
             if (styleSpans != null) {
@@ -251,6 +252,13 @@ class TextStyleHelper (private val editTextView: EditText) {
             }
         }
 
+    }
+
+    fun removeZeroWidthSpaces(editable: Editable?) {
+        editable?.let {
+            val text = it.toString().replace("\u200B", "") // remove all
+            it.replace(0, it.length, text) // replace content in-place
+        }
     }
 
 
