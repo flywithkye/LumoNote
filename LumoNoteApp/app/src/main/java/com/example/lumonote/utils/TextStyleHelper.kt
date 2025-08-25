@@ -163,7 +163,6 @@ class TextStyleHelper (private val editTextView: EditText) {
         spanCounter++
 
         if (setSpan == null) {
-            editTextView.text = stringBuilder
             editTextView.setSelection(selectionStart)
         }
         if (selectionStart != selectionEnd) {
@@ -180,25 +179,6 @@ class TextStyleHelper (private val editTextView: EditText) {
             editTextView.text = stringBuilder
             editTextView.setSelection(selectionStart, selectionEnd)
 
-        } else {
-            // Cursor only (no selection) → we want new text to inherit formatting
-
-            // Insert invisible character
-            stringBuilder?.insert(selectionStart, "\u200B")
-
-            // Apply the style span OVER the invisible character
-            stringBuilder?.setSpan(
-                setSpan,
-                selectionStart,
-                selectionStart + 1,
-                Spanned.SPAN_EXCLUSIVE_INCLUSIVE // ← inclusive at end so new chars inherit style
-            )
-
-            removeUnintendedUnderlines(stringBuilder)
-
-            editTextView.text = stringBuilder
-            // Place cursor after the ZWSP
-            editTextView.setSelection(selectionStart + 1)
         }
     }
 
@@ -217,9 +197,7 @@ class TextStyleHelper (private val editTextView: EditText) {
 
 
         // check if all the selected range has the desired style spans
-        if (isAllSpanned(type) || (styleSpans?.size == 1 && selectionStart == selectionEnd)) {
-
-//            if (styleSpans?.size == 1 && selectionStart == selectionEnd) return null
+        if (isAllSpanned(type)) {
 
             // if there are pre-existing words set to that style span, remove it (bold or italics)
             if (styleSpans != null) {
@@ -252,13 +230,6 @@ class TextStyleHelper (private val editTextView: EditText) {
             }
         }
 
-    }
-
-    fun removeZeroWidthSpaces(editable: Editable?) {
-        editable?.let {
-            val text = it.toString().replace("\u200B", "") // remove all
-            it.replace(0, it.length, text) // replace content in-place
-        }
     }
 
 
