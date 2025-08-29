@@ -1,12 +1,9 @@
 package com.example.lumonote.ui.noteview
 
-import android.content.Context
-import android.graphics.Typeface
 import android.os.Bundle
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -16,13 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.lumonote.R
 import com.example.lumonote.data.database.DatabaseHelper
 import com.example.lumonote.data.models.Note
-import com.example.lumonote.data.models.TextSize
-import com.example.lumonote.data.models.TextStyle
 import com.example.lumonote.databinding.ActivityNoteViewBinding
-import com.example.lumonote.utils.TextStyleHelper
 import com.example.lumonote.utils.GeneralTextHelper
 import com.example.lumonote.utils.GeneralUIHelper
+import com.example.lumonote.utils.TextBulletHelper
 import com.example.lumonote.utils.TextSizeHelper
+import com.example.lumonote.utils.TextStyleHelper
 import java.time.LocalDate
 
 
@@ -32,6 +28,7 @@ class NoteViewActivity : AppCompatActivity() {
     private lateinit var dbConnection: DatabaseHelper
     private lateinit var textStyleHelper: TextStyleHelper
     private lateinit var textSizeHelper: TextSizeHelper
+    private lateinit var textBulletHelper: TextBulletHelper
     private val generalTextHelper: GeneralTextHelper = GeneralTextHelper()
     private val generalUIHelper: GeneralUIHelper = GeneralUIHelper()
 
@@ -53,10 +50,12 @@ class NoteViewActivity : AppCompatActivity() {
 
         textStyleHelper = TextStyleHelper(noteViewBinding.noteContentET)
         textSizeHelper = TextSizeHelper(noteViewBinding.noteContentET)
+        textBulletHelper = TextBulletHelper(noteViewBinding.noteContentET)
 
         inputViewModel = ViewModelProvider(this).get(InputViewModel::class.java)
         inputViewModel.setTextStyleHelper(textStyleHelper)
         inputViewModel.setTextSizeHelper(textSizeHelper)
+        inputViewModel.setTextBulletHelper(textBulletHelper)
 
         supportFragmentManager.beginTransaction().apply {
             replace(noteViewBinding.editSectionFC.id, editInputFragment)

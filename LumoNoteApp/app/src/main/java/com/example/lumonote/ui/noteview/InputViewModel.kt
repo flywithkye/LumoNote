@@ -5,6 +5,7 @@ import android.text.style.StyleSpan
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.lumonote.utils.TextBulletHelper
 import com.example.lumonote.utils.TextSizeHelper
 import com.example.lumonote.utils.TextStyleHelper
 
@@ -16,6 +17,9 @@ class InputViewModel : ViewModel() {
 
     private val _textSizeHelper = MutableLiveData<TextSizeHelper>()
     val textSizeHelper: LiveData<TextSizeHelper> get() = _textSizeHelper
+
+    private val _textBulletHelper = MutableLiveData<TextBulletHelper>()
+    val textBulletHelper: LiveData<TextBulletHelper> get() = _textBulletHelper
 
     // LiveData to track if EditText is focused
     private val _isEditing = MutableLiveData(false)
@@ -46,6 +50,10 @@ class InputViewModel : ViewModel() {
 
     fun setTextSizeHelper(textSizeHelper: TextSizeHelper) {
         _textSizeHelper.value = textSizeHelper
+    }
+
+    fun setTextBulletHelper(textBulletHelper: TextBulletHelper) {
+        _textBulletHelper.value = textBulletHelper
     }
 
     // Call this when EditText gains/loses focus

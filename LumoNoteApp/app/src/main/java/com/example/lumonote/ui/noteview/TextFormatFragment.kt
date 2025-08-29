@@ -13,6 +13,7 @@ import com.example.lumonote.data.models.TextSize
 import com.example.lumonote.data.models.TextStyle
 import com.example.lumonote.databinding.FragmentTextFormatBinding
 import com.example.lumonote.utils.GeneralUIHelper
+import com.example.lumonote.utils.TextBulletHelper
 import com.example.lumonote.utils.TextSizeHelper
 import com.example.lumonote.utils.TextStyleHelper
 
@@ -34,6 +35,7 @@ class TextFormatFragment: Fragment() {
     private lateinit var inputViewModel: InputViewModel
     private var textStyleHelper: TextStyleHelper? = null
     private var textSizeHelper: TextSizeHelper? = null
+    private var textBulletHelper: TextBulletHelper? = null
 
 
     // Called when the Fragment is created (before the UI exists)
@@ -60,6 +62,7 @@ class TextFormatFragment: Fragment() {
 
         textStyleHelper = inputViewModel.textStyleHelper.value
         textSizeHelper = inputViewModel.textSizeHelper.value
+        textBulletHelper = inputViewModel.textBulletHelper.value
 
         inputViewModel.isEditing.observe(viewLifecycleOwner){
             if (inputViewModel.isEditing.value == true) {
@@ -192,6 +195,9 @@ class TextFormatFragment: Fragment() {
             }
             underlineButtonIV.setOnClickListener {
                 textStyleHelper!!.formatText(TextStyle.UNDERLINE)
+            }
+            bulletButtonIV.setOnClickListener {
+                textBulletHelper!!.formatBullet()
             }
 
         }

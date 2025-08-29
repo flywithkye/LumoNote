@@ -184,6 +184,12 @@ class TextStyleHelper (private val editTextView: EditText) {
 
 
 
+    fun formatBullet() {
+
+    }
+
+
+
 
     private fun toggleBasicFormatting(type: TextStyle, typeface: Int)
         : CharacterStyle? {
