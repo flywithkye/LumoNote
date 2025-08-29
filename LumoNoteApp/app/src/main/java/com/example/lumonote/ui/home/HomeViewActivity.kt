@@ -41,6 +41,7 @@ class HomeViewActivity : AppCompatActivity() {
             add(homeViewBinding.currentHomeFragmentFL.id, calendarViewFragment)
             add(homeViewBinding.currentHomeFragmentFL.id, settingsViewFragment)
 
+            //reduce loading times by keeping all fragments in memory
             hide(calendarViewFragment)
             hide(settingsViewFragment)
 
