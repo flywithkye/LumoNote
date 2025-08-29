@@ -1,4 +1,4 @@
-package com.example.lumonote.ui.noteview
+package com.example.lumonote.ui.noteview.view
 
 import android.graphics.Typeface
 import android.os.Bundle
@@ -12,10 +12,11 @@ import com.example.lumonote.R
 import com.example.lumonote.data.models.TextSize
 import com.example.lumonote.data.models.TextStyle
 import com.example.lumonote.databinding.FragmentTextFormatBinding
-import com.example.lumonote.utils.GeneralUIHelper
-import com.example.lumonote.utils.TextBulletHelper
-import com.example.lumonote.utils.TextSizeHelper
-import com.example.lumonote.utils.TextStyleHelper
+import com.example.lumonote.ui.noteview.viewmodel.InputViewModel
+import com.example.lumonote.utils.general.GeneralUIHelper
+import com.example.lumonote.utils.texthelper.TextBulletHelper
+import com.example.lumonote.utils.texthelper.TextSizeHelper
+import com.example.lumonote.utils.texthelper.TextStyleHelper
 
 
 class TextFormatFragment: Fragment() {

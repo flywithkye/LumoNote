@@ -1,13 +1,13 @@
-package com.example.lumonote.ui.noteview
+package com.example.lumonote.ui.noteview.viewmodel
 
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.lumonote.utils.TextBulletHelper
-import com.example.lumonote.utils.TextSizeHelper
-import com.example.lumonote.utils.TextStyleHelper
+import com.example.lumonote.utils.texthelper.TextBulletHelper
+import com.example.lumonote.utils.texthelper.TextSizeHelper
+import com.example.lumonote.utils.texthelper.TextStyleHelper
 
 class InputViewModel : ViewModel() {
 

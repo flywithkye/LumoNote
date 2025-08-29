@@ -1,4 +1,4 @@
-package com.example.lumonote.ui.noteview
+package com.example.lumonote.ui.noteview.other
 
 import android.content.Context
 import android.graphics.Rect

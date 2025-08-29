@@ -1,4 +1,4 @@
-package com.example.lumonote.utils
+package com.example.lumonote.utils.texthelper
 
 import android.text.Editable
 import android.text.Spanned

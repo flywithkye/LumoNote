@@ -1,4 +1,4 @@
-package com.example.lumonote.ui.noteview
+package com.example.lumonote.ui.noteview.view
 
 import android.os.Bundle
 import android.os.Handler
@@ -11,7 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.lumonote.R
 import com.example.lumonote.databinding.FragmentEditInputBinding
-import com.example.lumonote.utils.GeneralUIHelper
+import com.example.lumonote.ui.noteview.viewmodel.InputViewModel
+import com.example.lumonote.utils.general.GeneralUIHelper
 
 
 class EditInputFragment : Fragment() {

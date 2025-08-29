@@ -1,4 +1,4 @@
-package com.example.lumonote.utils
+package com.example.lumonote.utils.general
 
 import android.content.Context
 import android.util.Log

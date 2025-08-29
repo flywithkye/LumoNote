@@ -13,9 +13,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lumonote.R
 import com.example.lumonote.data.models.Note
-import com.example.lumonote.ui.noteview.NoteViewActivity
-import com.example.lumonote.utils.GeneralTextHelper
-import com.example.lumonote.utils.GeneralUIHelper
+import com.example.lumonote.ui.noteview.view.NoteViewActivity
+import com.example.lumonote.utils.general.GeneralTextHelper
+import com.example.lumonote.utils.general.GeneralUIHelper
 
 
 // Inherits from RecyclerView.Adapter to allow definition of recycler view behaviour

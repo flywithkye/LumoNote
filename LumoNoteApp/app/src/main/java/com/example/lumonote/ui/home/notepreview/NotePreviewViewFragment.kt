@@ -11,8 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.lumonote.data.database.DatabaseHelper
 import com.example.lumonote.databinding.FragmentNotePreviewViewBinding
-import com.example.lumonote.ui.home.TagDisplayAdapter
-import com.example.lumonote.ui.noteview.NoteViewActivity
+import com.example.lumonote.ui.noteview.view.NoteViewActivity
 
 class NotePreviewViewFragment : Fragment() {
 

@@ -22,7 +22,7 @@
             android:name=".ui.home.HomeViewActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.noteview.NoteViewActivity"
+            android:name=".ui.noteview.view.NoteViewActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity

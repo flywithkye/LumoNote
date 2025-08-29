@@ -4,17 +4,24 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.lumonote.R
 import com.example.lumonote.databinding.ActivityHomeViewBinding
 import com.example.lumonote.ui.home.calendar.CalendarViewFragment
 import com.example.lumonote.ui.home.notepreview.NotePreviewViewFragment
 import com.example.lumonote.ui.home.settings.SettingsViewFragment
-import com.example.lumonote.utils.GeneralUIHelper
+import com.example.lumonote.utils.general.GeneralUIHelper
 
 class HomeViewActivity : AppCompatActivity() {
 
     private lateinit var homeViewBinding: ActivityHomeViewBinding
+    private lateinit var homeViewModel: HomeViewModel
     private val generalUIHelper: GeneralUIHelper = GeneralUIHelper()
+
+    private val notePreviewViewFragment = NotePreviewViewFragment()
+    private val calendarViewFragment = CalendarViewFragment()
+    private val settingsViewFragment = SettingsViewFragment()
+    private lateinit var navigationFragments: MutableList<Fragment>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,16 +30,10 @@ class HomeViewActivity : AppCompatActivity() {
         homeViewBinding = ActivityHomeViewBinding.inflate(layoutInflater)
         setContentView(homeViewBinding.root)
 
-        val notePreviewViewFragment = NotePreviewViewFragment()
-        val calendarViewFragment = CalendarViewFragment()
-        val settingsViewFragment = SettingsViewFragment()
-        val navigationFragments: MutableList<Fragment> =
-            mutableListOf(notePreviewViewFragment, calendarViewFragment,
-                settingsViewFragment)
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
-        val navigationButtonIVs: MutableList<ImageView> =
-            mutableListOf(homeViewBinding.notesViewIV, homeViewBinding.calendarViewIV,
-                homeViewBinding.settingsViewIV)
+        navigationFragments = mutableListOf(notePreviewViewFragment, calendarViewFragment,
+            settingsViewFragment)
 
 
         supportFragmentManager.beginTransaction().apply {
@@ -46,57 +47,73 @@ class HomeViewActivity : AppCompatActivity() {
             commit()
         }
 
-        switchToFragment(navigationButtonIVs,homeViewBinding.notesViewIV, navigationFragments,
-            notePreviewViewFragment, R.color.gold, R.color.light_grey_2)
+        switchToFragment(notePreviewViewFragment)
 
 
         homeViewBinding.notesViewIV.setOnClickListener {
-            switchToFragment(navigationButtonIVs, homeViewBinding.notesViewIV, navigationFragments,
-                notePreviewViewFragment, R.color.gold, R.color.light_grey_2)
+            switchToFragment(notePreviewViewFragment)
         }
 
         homeViewBinding.calendarViewIV.setOnClickListener {
-            switchToFragment(navigationButtonIVs, homeViewBinding.calendarViewIV, navigationFragments,
-                calendarViewFragment, R.color.gold, R.color.light_grey_2)
+            switchToFragment(calendarViewFragment)
         }
 
         homeViewBinding.settingsViewIV.setOnClickListener {
-            switchToFragment(navigationButtonIVs, homeViewBinding.settingsViewIV, navigationFragments,
-                settingsViewFragment, R.color.gold, R.color.light_grey_2)
+            switchToFragment(settingsViewFragment)
+        }
+
+
+        homeViewModel.notePreviewActive.observe(this) { active ->
+            updateIVButtonHighlight(homeViewBinding.notesViewIV, active)
+        }
+
+        homeViewModel.calendarActive.observe(this) { active ->
+            updateIVButtonHighlight(homeViewBinding.calendarViewIV, active)
+        }
+
+        homeViewModel.settingsActive.observe(this) { active ->
+            updateIVButtonHighlight(homeViewBinding.settingsViewIV, active)
         }
     }
 
 
-    private fun switchToFragment(buttonIVList: MutableList<ImageView>, targetIV: ImageView,
-                                 fragmentList: MutableList<Fragment>, targetFragment: Fragment,
-                                 activeColor: Int, inactiveColor: Int) {
+    private fun updateFragmentActiveStatus(fragment: Fragment, status: Boolean)  {
+        when (fragment) {
+            notePreviewViewFragment -> homeViewModel.setNotePreviewActive(status)
+            calendarViewFragment -> homeViewModel.setCalendarActive(status)
+            settingsViewFragment -> homeViewModel.setSettingsActive(status)
+        }
+    }
+
+    private fun switchToFragment(targetFragment: Fragment) {
 
         supportFragmentManager.beginTransaction().apply {
-            for (fragment in fragmentList) {
+            for (fragment in navigationFragments) {
 
                 if (fragment == targetFragment) {
                     //show it
                     show(fragment)
+                    //depending on the fragment, update its view model counterpart to active
+                    updateFragmentActiveStatus(fragment, true)
                 } else {
                     // hide the rest
                     hide(fragment)
+                    //make as inactive all the rest in their view model counterpart
+                    updateFragmentActiveStatus(fragment, false)
                 }
             }
 
             commit()
         }
 
+    }
 
-
-
-        for (buttonImageView in buttonIVList) {
-            if (buttonImageView == targetIV) {
-                generalUIHelper.changeButtonIVColor(this, buttonImageView, activeColor)
-            } else {
-                generalUIHelper.changeButtonIVColor(this, buttonImageView, inactiveColor)
-            }
+    private fun updateIVButtonHighlight(buttonImageView: ImageView, isActive: Boolean) {
+        if (isActive) {
+            generalUIHelper.changeButtonIVColor(this, buttonImageView, R.color.gold)
+        } else {
+            generalUIHelper.changeButtonIVColor(this, buttonImageView, R.color.light_grey_2)
         }
-
     }
 
 }

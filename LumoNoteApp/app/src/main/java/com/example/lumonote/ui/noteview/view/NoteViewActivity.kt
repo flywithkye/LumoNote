@@ -1,4 +1,4 @@
-package com.example.lumonote.ui.noteview
+package com.example.lumonote.ui.noteview.view
 
 import android.os.Bundle
 import android.text.style.RelativeSizeSpan
@@ -14,11 +14,12 @@ import com.example.lumonote.R
 import com.example.lumonote.data.database.DatabaseHelper
 import com.example.lumonote.data.models.Note
 import com.example.lumonote.databinding.ActivityNoteViewBinding
-import com.example.lumonote.utils.GeneralTextHelper
-import com.example.lumonote.utils.GeneralUIHelper
-import com.example.lumonote.utils.TextBulletHelper
-import com.example.lumonote.utils.TextSizeHelper
-import com.example.lumonote.utils.TextStyleHelper
+import com.example.lumonote.ui.noteview.viewmodel.InputViewModel
+import com.example.lumonote.utils.general.GeneralTextHelper
+import com.example.lumonote.utils.general.GeneralUIHelper
+import com.example.lumonote.utils.texthelper.TextBulletHelper
+import com.example.lumonote.utils.texthelper.TextSizeHelper
+import com.example.lumonote.utils.texthelper.TextStyleHelper
 import java.time.LocalDate
 
 
